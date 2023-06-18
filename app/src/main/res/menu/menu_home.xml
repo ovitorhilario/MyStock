@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group
+        android:id="@+id/group_home"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/fragment_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/menu_home"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/fragment_transactions"
+            android:icon="@drawable/ic_swap"
+            android:title="@string/menu_transactions"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/fragment_products"
+            android:icon="@drawable/ic_box"
+            android:title="@string/menu_products"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/fragment_profile"
+            android:icon="@drawable/ic_person"
+            android:title="@string/menu_profile"
+            app:showAsAction="ifRoom" />
+
+    </group>
+
+</menu>

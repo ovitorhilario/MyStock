@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_home.xml"
+    app:startDestination="@id/fragment_home">
+
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="com.vitorhilarioapps.mystock.ui.home.view.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_home_to_transactions"
+            app:destination="@id/fragment_transactions"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/action_home_to_products"
+            app:destination="@id/fragment_products"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/action_home_to_profile"
+            app:destination="@id/fragment_profile"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_transactions"
+        android:name="com.vitorhilarioapps.mystock.ui.home.view.transactions.TransactionsFragment"
+        android:label="@string/transactions"
+        tools:layout="@layout/fragment_transactions">
+
+        <argument
+            android:name="page_direction"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_transactions_to_select_products"
+            app:destination="@id/fragment_select_products"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <argument
+            android:name="open_register"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_products"
+        android:name="com.vitorhilarioapps.mystock.ui.home.view.products.ProductsFragment"
+        android:label="@string/menu_products"
+        tools:layout="@layout/fragment_products">
+
+        <action
+            android:id="@+id/action_products_to_add_products"
+            app:destination="@id/fragment_add_products"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <argument
+            android:name="open_add_products"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="com.vitorhilarioapps.mystock.ui.home.view.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/fragment_add_products"
+        android:name="com.vitorhilarioapps.mystock.ui.home.view.addproducts.AddProductsFragment"
+        android:label="@string/add_products"
+        tools:layout="@layout/fragment_add_products" />
+
+    <fragment
+        android:id="@+id/fragment_select_products"
+        android:name="com.vitorhilarioapps.mystock.ui.home.view.selectproducts.SelectProductFragment"
+        android:label="@string/select_products"
+        tools:layout="@layout/fragment_select_products">
+
+        <action
+            android:id="@+id/action_select_products_to_transactions"
+            app:destination="@id/fragment_transactions"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/action_fragment_select_products_to_fragment_register_exit"
+            app:destination="@id/fragment_register_exit"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/action_fragment_select_products_to_fragment_register_entry"
+            app:destination="@id/fragment_register_entry"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <argument
+            android:name="transactionType"
+            app:argType="com.vitorhilarioapps.mystock.ui.home.view.transactions.model.TransactionType" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_register_entry"
+        android:name="com.vitorhilarioapps.mystock.ui.home.view.registers.entry.RegisterEntryFragment"
+        android:label="@string/register_entry"
+        tools:layout="@layout/fragment_register_entry">
+
+        <argument
+            android:name="selectedProducts"
+            app:argType="integer[]" />
+        <action
+            android:id="@+id/action_register_entry_to_transactions"
+            app:destination="@id/fragment_transactions"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/fragment_home" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_register_exit"
+        android:name="com.vitorhilarioapps.mystock.ui.home.view.registers.exit.RegisterExitFragment"
+        android:label="@string/register_exit"
+        tools:layout="@layout/fragment_register_exit">
+
+        <argument
+            android:name="selectedProducts"
+            app:argType="integer[]" />
+        <action
+            android:id="@+id/action_register_exit_to_transactions"
+            app:destination="@id/fragment_transactions"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/fragment_home" />
+
+    </fragment>
+
+</navigation>

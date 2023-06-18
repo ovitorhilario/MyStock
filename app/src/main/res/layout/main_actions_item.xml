@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/gap_normal"
+    android:paddingHorizontal="@dimen/gap_normal">
+
+    <TextView
+        android:id="@+id/tv_main_actions_tittle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingBottom="@dimen/gap_normal"
+        android:text="@string/main_activities_text"
+        android:textSize="@dimen/font_size_larger"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_main_action_add_product"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="@dimen/gap_small"
+        android:background="@drawable/short_cut_blue_bg"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toStartOf="@+id/guide_line_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_actions_tittle">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/gap_normal"
+            android:layout_marginBottom="@dimen/gap_small"
+            android:contentDescription="@string/image_icon_new_product_desc"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_product_add"
+            app:layout_constraintBottom_toTopOf="@id/tv_add_new_product"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_add_new_product"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/gap_small"
+            android:gravity="center"
+            android:text="@string/add_product_text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_main_action_add_sale"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginHorizontal="@dimen/gap_small"
+        android:background="@drawable/short_cut_yellow_bg"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toStartOf="@+id/guide_line_2"
+        app:layout_constraintStart_toEndOf="@id/guide_line_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_actions_tittle">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/gap_normal"
+            android:layout_marginBottom="@dimen/gap_small"
+            android:contentDescription="@string/image_icon_new_sale_desc"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_sale_add"
+            app:layout_constraintBottom_toTopOf="@id/tv_add_new_sale"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_add_new_sale"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/gap_small"
+            android:gravity="center"
+            android:text="@string/add_sale_text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_main_action_add_purchase"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="@dimen/gap_small"
+        android:background="@drawable/short_cut_red_bg"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guide_line_2"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_actions_tittle">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/gap_normal"
+            android:layout_marginBottom="@dimen/gap_small"
+            android:contentDescription="@string/image_icon_new_purchase_desc"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_purchase_add"
+            app:layout_constraintBottom_toTopOf="@id/tv_add_new_purchase"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_add_new_purchase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/gap_small"
+            android:gravity="center"
+            android:text="@string/add_purchase_text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_line_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_line_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

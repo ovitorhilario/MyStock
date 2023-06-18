@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/gap_normal"
+    android:paddingStart="@dimen/gap_normal"
+    android:paddingEnd="@dimen/gap_small">
+
+    <TextView
+        android:id="@+id/tv_product_select_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/gap_normal"
+        android:layout_marginEnd="@dimen/gap_small"
+        android:background="@drawable/product_amount_bg"
+        android:gravity="center"
+        android:maxLines="1"
+        android:minWidth="48dp"
+        android:paddingHorizontal="@dimen/gap_small"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_size_normal"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btn_product_select_minus"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_product_select_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/short_cut_yellow_bg"
+        android:backgroundTint="@null"
+        android:contentDescription="@string/image_icon_product_desc"
+        android:padding="@dimen/gap_small"
+        android:src="@drawable/ic_product"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_product_select_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/gap_normal"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLines="1"
+        android:text="@string/lorem_ipsum"
+        android:textSize="@dimen/font_size_normal"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/tv_product_select_amount"
+        app:layout_constraintStart_toEndOf="@id/iv_product_select_icon"
+        app:layout_constraintTop_toTopOf="@id/iv_product_select_icon" />
+
+    <ImageView
+        android:id="@+id/iv_product_select_price_icon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="@dimen/gap_normal"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/image_icon_product_sale_price_desc"
+        android:src="@drawable/ic_purchase"
+        app:layout_constraintStart_toEndOf="@id/iv_product_select_icon"
+        app:layout_constraintTop_toBottomOf="@id/tv_product_select_name" />
+
+    <TextView
+        android:id="@+id/tv_product_select_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="@dimen/gap_normal"
+        android:gravity="start"
+        android:maxLines="1"
+        android:text="@string/lorem_ipsum"
+        android:textSize="@dimen/font_size_small"
+        app:layout_constraintEnd_toStartOf="@id/tv_product_select_amount"
+        app:layout_constraintStart_toEndOf="@id/iv_product_select_price_icon"
+        app:layout_constraintTop_toTopOf="@id/iv_product_select_price_icon" />
+
+    <ImageButton
+        android:id="@+id/btn_product_select_add"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/image_button_bg"
+        android:contentDescription="@string/image_button_add_an_product_desc"
+        android:padding="@dimen/gap_small"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_product_select_cont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/gap_normal"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_product_select_add"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_product_select_minus"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="@dimen/gap_normal"
+        android:background="@drawable/image_button_bg"
+        android:contentDescription="@string/image_button_remove_an_product_desc"
+        android:padding="@dimen/gap_small"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_remove"
+        app:layout_constraintEnd_toStartOf="@id/tv_product_select_cont"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

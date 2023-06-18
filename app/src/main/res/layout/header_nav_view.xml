@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/gap_normal">
+
+    <ImageView
+        android:id="@+id/banner_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_height"
+        android:contentDescription="@string/profile_banner_image_desc"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/gap_normal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/card_person"
+        app:layout_constraintEnd_toStartOf="@id/btn_logout_header"
+        app:layout_constraintStart_toEndOf="@id/card_person"
+        app:layout_constraintTop_toBottomOf="@id/banner_header">
+
+        <TextView
+            android:id="@+id/tv_username_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="@string/lorem_ipsum"
+            android:textSize="@dimen/font_size_normal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_email_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="@string/fake_email_text"
+            android:textSize="@dimen/font_size_small" />
+
+    </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_person"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="@dimen/gap_normal"
+        android:layout_marginTop="-20dp"
+        android:elevation="0dp"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/banner_header"
+        app:strokeColor="@color/white"
+        app:strokeWidth="4dp">
+
+        <ImageView
+            android:id="@+id/iv_person"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/profile_user_image_desc"
+            android:src="@drawable/user_avatar" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageButton
+        android:id="@+id/btn_logout_header"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/gap_normal"
+        android:background="@drawable/image_button_bg"
+        android:contentDescription="@string/image_button_logout_desc"
+        android:padding="@dimen/gap_small"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_exit"
+        app:layout_constraintBottom_toBottomOf="@id/card_person"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/banner_header" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/btn_back_sign_up"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/gap_normal"
+            android:background="@drawable/image_button_bg"
+            android:clickable="true"
+            android:contentDescription="@string/button_back_sign_up"
+            android:focusable="true"
+            android:padding="@dimen/gap_small"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/gap_normal"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_back_sign_up">
+
+            <ImageView
+                android:id="@+id/iv_sign_up_banner"
+                android:layout_width="wrap_content"
+                android:layout_height="260dp"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_normal"
+                android:text="@string/create_an_account_text"
+                android:textSize="@dimen/font_size_medium"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_normal"
+                android:hint="@string/name_hint"
+                app:boxStrokeWidth="0dp"
+                app:startIconDrawable="@drawable/ic_pencil">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_user_name_sign_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/input_height"
+                    android:background="@drawable/input_bg"
+                    android:inputType="text"
+                    android:textSize="@dimen/font_size_normal" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_normal"
+                android:hint="@string/email_hint"
+                app:boxStrokeWidth="0dp"
+                app:startIconDrawable="@drawable/ic_outline_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_email_sign_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/input_height"
+                    android:background="@drawable/input_bg"
+                    android:inputType="textEmailAddress"
+                    android:textSize="@dimen/font_size_normal" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_password_sign_up"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_normal"
+                android:hint="@string/password_hint"
+                app:boxStrokeWidth="0dp"
+                app:endIconMode="password_toggle"
+                app:startIconDrawable="@drawable/ic_outline_lock">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_password_sign_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/input_height"
+                    android:background="@drawable/input_bg"
+                    android:inputType="textPassword"
+                    android:textSize="@dimen/font_size_normal" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_confirm_password_sign_up"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap_normal"
+                android:hint="@string/confirm_password"
+                app:boxStrokeWidth="0dp"
+                app:endIconMode="password_toggle"
+                app:startIconDrawable="@drawable/ic_outline_lock">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_confirm_password_sign_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/input_height"
+                    android:background="@drawable/input_bg"
+                    android:inputType="textPassword"
+                    android:textSize="@dimen/font_size_normal" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="@dimen/gap_normal"
+                android:background="@drawable/button_bg"
+                android:text="@string/btn_sign_up"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_normal"
+                app:backgroundTint="@null" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Illustration by "
+                    android:textSize="@dimen/font_size_small" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Athul Mc"
+                    android:textSize="@dimen/font_size_small"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" on "
+                    android:textSize="@dimen/font_size_small" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="freeicons.io"
+                    android:textSize="@dimen/font_size_small"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

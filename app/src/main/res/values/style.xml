@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
+    <style name="toolbarText" parent="@style/Base.TextAppearance.AppCompat.Title">
+        <item name="android:textSize">@dimen/font_size_larger</item>
+    </style>
+
+    <style name="buttonStyle" parent="@style/Widget.Material3.Button">
+        <item name="android:background">@drawable/button_bg</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_size_normal</item>
+        <item name="iconTint">@color/white</item>
+        <item name="backgroundTint">@null</item>
+        <item name="cornerRadius">0dp</item>
+    </style>
+</resources>

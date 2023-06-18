@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/gap_normal"
+    android:layout_marginBottom="@dimen/gap_normal">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_line_shortcut_mid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_short_cut_item_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/gap_small"
+        android:background="@drawable/short_cut_background"
+        android:padding="@dimen/gap_normal"
+        app:layout_constraintEnd_toStartOf="@id/guide_line_shortcut_mid"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_shortcut_icon_item_1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/info_money_bg"
+            android:contentDescription="@string/image_value_in_stock_desc"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_money_simbol"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_shortcut_value_item_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_small"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/fake_money"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_shortcut_icon_item_1" />
+
+        <TextView
+            android:id="@+id/tv_shortcut_description_item_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_shortcut_value_item_1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_short_cut_item_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/gap_small"
+        android:background="@drawable/short_cut_background"
+        android:padding="@dimen/gap_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guide_line_shortcut_mid"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_shortcut_icon_item_2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/info_money_bg"
+            android:contentDescription="@string/image_all_products_desc"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_money_simbol"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_shortcut_value_item_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_small"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/fake_money"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_shortcut_icon_item_2" />
+
+        <TextView
+            android:id="@+id/tv_shortcut_description_item_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_shortcut_value_item_2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_short_cut_item_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/gap_normal"
+        android:layout_marginEnd="@dimen/gap_small"
+        android:background="@drawable/short_cut_background"
+        android:padding="@dimen/gap_normal"
+        app:layout_constraintEnd_toStartOf="@id/guide_line_shortcut_mid"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_short_cut_item_1">
+
+        <ImageView
+            android:id="@+id/iv_shortcut_icon_item_3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/info_money_bg"
+            android:contentDescription="@string/image_entry_transactions_desc"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_money_simbol"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_shortcut_value_item_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_small"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/fake_money"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_shortcut_icon_item_3" />
+
+        <TextView
+            android:id="@+id/tv_shortcut_description_item_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_shortcut_value_item_3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_short_cut_item_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/gap_small"
+        android:layout_marginTop="@dimen/gap_normal"
+        android:background="@drawable/short_cut_background"
+        android:padding="@dimen/gap_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guide_line_shortcut_mid"
+        app:layout_constraintTop_toBottomOf="@id/layout_short_cut_item_2">
+
+        <ImageView
+            android:id="@+id/iv_shortcut_icon_item_4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/info_money_bg"
+            android:contentDescription="@string/image_exit_transactions_desc"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_money_simbol"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_shortcut_value_item_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_small"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/fake_money"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_shortcut_icon_item_4" />
+
+        <TextView
+            android:id="@+id/tv_shortcut_description_item_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_shortcut_value_item_4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

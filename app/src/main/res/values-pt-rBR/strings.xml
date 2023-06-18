@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyStock</string>
+    <string name="forgot_password">" Esqueceu sua senha?"</string>
+    <string name="password_hint">Senha</string>
+    <string name="btn_sign_in">Entrar</string>
+    <string name="btn_sign_up">Cadastrar-se</string>
+    <string name="dont_have_account">Não tem uma conta?</string>
+    <string name="confirm_password">Confirmar senha</string>
+    <string name="confirm_password_hint">Confirmar senha</string>
+    <string name="name_hint">Nome</string>
+    <string name="sign_in_google">Entrar com o Google</string>
+    <string name="btn_logout">Sair</string>
+    <string name="button_back_sign_up">Botão de voltar para tela de login</string>
+    <string name="menu_home">Início</string>
+    <string name="menu_products">Produtos</string>
+    <string name="menu_profile">Perfil</string>
+    <string name="code_hint">Código</string>
+    <string name="amount_hint">Quantidade</string>
+    <string name="description_hint">Descrição</string>
+    <string name="weight_hint">Peso</string>
+    <string name="category_hint">Categoria</string>
+    <string name="purchase_price_hint">Preço de Compra</string>
+    <string name="sale_price_hint">Preço de Venda</string>
+    <string name="product_info_label">Informações do Produto</string>
+    <string name="register_product_tittle">Registrar Produto</string>
+    <string name="add_info_label">Informações Adicionais</string>
+    <string name="purchase_and_sale_price_label">Preço de Venda e Compra</string>
+    <string name="add_product_btn">Adicionar Produto</string>
+    <string name="button_dropdown_entry_desc">Botão para visualizar o conteúdo expansível da venda</string>
+    <string name="background_image_sale_icon_desc">imagem de fundo do ícone de venda</string>
+    <string name="button_dropdown_exit_desc">Botão para visualizar o conteúdo expansível da compra</string>
+    <string name="background_image_purchase_icon_desc">Imagem de fundo do ícone de compra</string>
+    <string name="unit_hint">Unidade</string>
+    <string name="button_scan_barcode_desc">Butão para escanear código de barras</string>
+    <string name="btn_add_new_transaction">Adicionar nova Transação</string>
+    <string name="nothing_found_text">Nada encontrado</string>
+    <string name="image_without_data_desc">Imagem de conteúdo não encontrado</string>
+    <string name="fab_btn_add_new_transaction_desc">Botão flutuante para adicionar uma nova transação</string>
+    <string name="btn_add_new_product">Adicionar novo produto</string>
+    <string name="btn_fab_new_add_new_product">Botão flutuante para adicionar novo produto</string>
+    <string name="btn_delete_selected_products">Deletar produtos selecionados</string>
+    <string name="btn_cancel_the_delete_selection">Cancelar a seleção de produtos para deletar</string>
+    <string name="image_products_without_data_desc">Imagem de produtos não encontrados</string>
+    <string name="profile_user_image_desc">Imagem do perfil do usuário</string>
+    <string name="profile_banner_image_desc">Imagem de banner do perfil</string>
+    <string name="since_text">Desde de</string>
+    <string name="image_button_edit_profile_desc">Imagem de botão para editar o perfil</string>
+    <string name="btn_confirm_sale">Confirmar Venda</string>
+    <string name="confirm_purchase">Confirmar Compra</string>
+    <string name="fab_btn_confirm_product_selection_desc">Botão flutuante para confirmar a seleção de produtos</string>
+    <string name="banner_illustration_sign_in_desc">banner de ilustração da tela de login</string>
+    <string name="sign_in_text">Entre com sua conta!</string>
+    <string name="create_an_account_text">Crie uma conta!</string>
+    <string name="image_loading_landing_page_desc">Imagem de carregamento da pagina inicial</string>
+    <string name="image_button_logout_desc">Image de botão para sair da conta</string>
+    <string name="chip_all">Tudo</string>
+    <string name="chip_last_month">Este Mês</string>
+    <string name="chip_last_week">Esta Semana</string>
+    <string name="chip_today">Hoje</string>
+    <string name="transactions_balance_text">Resultado das Transaçõe</string>
+    <string name="profit_on_sales_text">Lucro sobre Vendas</string>
+    <string name="main_activities_text">Atividades Principais</string>
+    <string name="add_product_text">Novo Produto</string>
+    <string name="add_sale_text">Nova Venda</string>
+    <string name="add_purchase_text">Novo Compra</string>
+    <string name="image_icon_new_sale_desc">Imagem do ícone de nova compra</string>
+    <string name="image_icon_new_purchase_desc">Imagem do ícone de nova compra</string>
+    <string name="image_icon_new_product_desc">Imagem do ícone de novo produto</string>
+    <string name="image_icon_product_description_desc">Imagem do ícone da descrição do produto</string>
+    <string name="image_icon_product_category_desc">Imagem do ícone da categoria do produto</string>
+    <string name="image_icon_product_weight_desc">Imagem do ícone do peso do produto</string>
+    <string name="image_icon_product_barcode_desc">Imagem do ícone do código de barras do produto</string>
+    <string name="image_icon_product_sale_price_desc">Imagem do ícone do preço de venda</string>
+    <string name="image_icon_product_purchase_price_desc">Imagem do ícone do preço de compra</string>
+    <string name="image_icon_product_desc">imagem do ícone do produto</string>
+    <string name="image_button_remove_an_product_desc">imagem do botão remover um produto</string>
+    <string name="image_button_add_an_product_desc">imagem do botão adicionar um produto</string>
+    <string name="recently_transactions_text">Transações Recentes</string>
+    <string name="nothing_found_transaction_text">Nada encontrado!</string>
+    <string name="see_all_text">Ver tudo</string>
+    <string name="image_value_in_stock_desc">Image do valor em estoque</string>
+    <string name="image_all_products_desc">imagem do ícone de todos os produtos</string>
+    <string name="image_entry_transactions_desc">imagem do ícone de transações de venda</string>
+    <string name="image_exit_transactions_desc">imagem do ícone de transações de compra</string>
+    <string name="error_sign_in">Erro ao conectar. Verifique seu email e senha.</string>
+    <string name="error_sign_in_google">Erro ao conectar. Tente novamente!</string>
+    <string name="send">Enviar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="send_new_link">Deseja que outro link de verificação seja enviado em seu e-mail?</string>
+    <string name="sended_link">Um link de confirmação foi enviado para o seu email!</string>
+    <string name="little_password">Senha muito pequena! o mínimo são 6 caracteres!</string>
+    <string name="password_do_not_match">As senhas não coincidem!</string>
+    <string name="invalid_user">Usuário inválido!</string>
+    <string name="auth_failed">A autenticação falhou.</string>
+    <string name="invalid_credentials">Credenciais inválidas!</string>
+    <string name="product_added">Produto adicionado!</string>
+    <string name="error_to_add_product">Erro ao adicionar!</string>
+    <string name="value_in_stock">Valor em Estoque</string>
+    <string name="all_products">Todos os Produtos</string>
+    <string name="entry">Entradas</string>
+    <string name="exit">Saídas</string>
+    <string name="success_in_delete">Os produtos foram deletados!</string>
+    <string name="registered_products">Produtos Registrados</string>
+    <string name="success_in_add_transaction">Transação adicionada!</string>
+    <string name="error_to_add_transaction">Erro ao adicionar transação!</string>
+    <string name="select_at_least_one">Selecione pelo menos um!</string>
+    <string name="sales">Vendas</string>
+    <string name="purchases">Compras</string>
+    <string name="dont_have_products">Você não possui produtos ainda!</string>
+    <string name="register_exit">Registrar Saída</string>
+    <string name="register_entry">Registrar Entrada</string>
+    <string name="select_products">Selecione os Produtos</string>
+    <string name="add_products">Adicionar Produtos</string>
+    <string name="notifications">Notificações</string>
+    <string name="transactions">Transações</string>
+    <string name="menu_transactions">Transações</string>
+    <string name="empty_name">Nome vazio!</string>
+    <string name="image_banner_forgot_password_desc">Imagem do banner de perda de senha</string>
+    <string name="btn_send_email_reset_password">Enviar e-mail</string>
+    <string name="enter_your_email_to_receive_a_password_reset_link_text">Digite seu e-mail para receber um link de redefinição de senha</string>
+    <string name="email_sent">Email enviado!</string>
+    <string name="wrong_email">Email errado!</string>
+
+    <string-array name="category_list">
+        <item></item>
+        <item>Roupas</item>
+        <item>Brinquedos</item>
+        <item>Utilitários</item>
+        <item>Decoração</item>
+        <item>Higiene Pessoal</item>
+        <item>Alimentos Congelados</item>
+        <item>Alimentos não Perecíveis</item>
+        <item>Alimentos Perecíveis</item>
+        <item>Bebidas</item>
+        <item>Hortifrúti e Carnes</item>
+        <item>Produtos de Limpeza</item>
+        <item>Produtos para Pets</item>
+    </string-array>
+    <string name="image_banner_stock_home_page_desc">Image do banner de estoque da página inicial</string>
+    <string name="fill_in_all_required_information_text">Preencha todas as informações obrigatórias!</string>
+    <string name="error_registering_product_text">Erro ao cadastrar produto</string>
+    <string name="the_scanner_will_be_present_in_the_next_att_text">O Scanner estará presente na próxima att.</string>
+    <string name="error_sending_email_try_again_text">Erro ao enviar email. Tente novamente.</string>
+    <string name="error_sending_email_text">Erro ao mandar email de verificação!</string>
+    <string name="fill_in_all_information_text">Preencha todas as informações!</string>
+
+</resources>

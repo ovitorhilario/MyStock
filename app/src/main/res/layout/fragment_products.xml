@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_products"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/divider_products"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_products"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="80dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    <LinearLayout
+        android:id="@+id/container_products_without_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/divider_products"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_products_without_data"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:contentDescription="@string/image_products_without_data_desc" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_normal"
+            android:gravity="center"
+            android:text="@string/nothing_found_text" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_products_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_normal"
+            android:background="@drawable/button_bg"
+            android:text="@string/btn_add_new_product"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_products_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/gap_normal"
+        android:contentDescription="@string/btn_fab_new_add_new_product"
+        android:src="@drawable/ic_product_add"
+        android:textSize="@dimen/font_size_normal"
+        app:layout_constraintBottom_toTopOf="@id/divider_products"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_products"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/gap_normal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/tv_products_info" />
+
+    <TextView
+        android:id="@+id/tv_products_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/gap_normal"
+        android:layout_marginBottom="4dp"
+        android:text="@string/lorem_ipsum"
+        app:layout_constraintBottom_toTopOf="@id/tv_products_info_2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_products_info_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/gap_normal"
+        android:layout_marginBottom="@dimen/gap_normal"
+        android:text="@string/lorem_ipsum"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_products_delete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/gap_small"
+        android:background="@drawable/image_button_bg"
+        android:contentDescription="@string/btn_delete_selected_products"
+        android:padding="@dimen/gap_small"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_delete"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_products_cancel"
+        app:layout_constraintTop_toBottomOf="@id/divider_products" />
+
+    <ImageButton
+        android:id="@+id/btn_products_cancel"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/gap_small"
+        android:background="@drawable/image_button_bg"
+        android:contentDescription="@string/btn_cancel_the_delete_selection"
+        android:padding="@dimen/gap_small"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_cancel"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_products" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

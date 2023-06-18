@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/gap_normal">
+
+    <ImageButton
+        android:id="@+id/btn_entry_transaction_drop_down"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/gap_normal"
+        android:layout_marginEnd="@dimen/gap_normal"
+        android:background="@drawable/image_button_bg"
+        android:clickable="true"
+        android:contentDescription="@string/button_dropdown_entry_desc"
+        android:focusable="true"
+        android:padding="@dimen/gap_small"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_down" />
+
+    <TextView
+        android:id="@+id/tv_entry_transaction_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/gap_normal"
+        android:maxLines="1"
+        android:text="@string/lorem_ipsum"
+        android:textColor="#31F40E"
+        android:textSize="@dimen/font_size_normal"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/btn_entry_transaction_drop_down"
+        app:layout_constraintEnd_toStartOf="@+id/btn_entry_transaction_drop_down"
+        app:layout_constraintTop_toTopOf="@id/btn_entry_transaction_drop_down" />
+
+    <ImageView
+        android:id="@+id/iv_entry_transaction_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/gap_normal"
+        android:layout_marginTop="@dimen/gap_normal"
+        android:background="@drawable/short_cut_blue_bg"
+        android:backgroundTint="@null"
+        android:contentDescription="@string/background_image_sale_icon_desc"
+        android:padding="@dimen/gap_small"
+        android:src="@drawable/ic_sale_price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_entry_transaction_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/gap_normal"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLines="1"
+        android:text="@string/lorem_ipsum"
+        android:textSize="@dimen/font_size_normal"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/tv_entry_transaction_value"
+        app:layout_constraintStart_toEndOf="@id/iv_entry_transaction_icon"
+        app:layout_constraintTop_toTopOf="@id/iv_entry_transaction_icon" />
+
+    <TextView
+        android:id="@+id/tv_entry_transaction_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/gap_normal"
+        android:layout_marginTop="4dp"
+        android:gravity="start"
+        android:maxLines="1"
+        android:text="@string/lorem_ipsum"
+        android:textSize="@dimen/font_size_small"
+        app:layout_constraintEnd_toStartOf="@id/tv_entry_transaction_value"
+        app:layout_constraintStart_toEndOf="@id/iv_entry_transaction_icon"
+        app:layout_constraintTop_toBottomOf="@id/tv_entry_transaction_info" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_transaction_entry_drop_drown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/gap_normal"
+        android:layout_marginTop="@dimen/gap_normal"
+        app:layout_constraintTop_toBottomOf="@id/iv_entry_transaction_icon">
+
+        <TextView
+            android:id="@+id/tv_entry_transaction_all_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lorem_ipsum"
+            android:textSize="@dimen/font_size_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

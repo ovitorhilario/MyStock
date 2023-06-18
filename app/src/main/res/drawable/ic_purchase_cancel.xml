@@ -1,0 +1,18 @@
+<vector android:height="24dp" android:viewportHeight="32"
+    android:viewportWidth="32" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#000000" android:fillType="evenOdd"
+        android:pathData="m9,24.006c-1.645,0 -3,1.355 -3,3 0,1.645 1.355,3 3,3 1.645,0 3,-1.355 3,-3 0,-1.645 -1.355,-3 -3,-3zM9,26.006c0.564,0 1,0.436 1,1 0,0.564 -0.436,1 -1,1 -0.564,0 -1,-0.436 -1,-1 0,-0.564 0.436,-1 1,-1z"
+        android:strokeLineCap="round" android:strokeLineJoin="round"/>
+    <path android:fillColor="#000000" android:fillType="evenOdd"
+        android:pathData="m23,24.006c-1.645,0 -3,1.355 -3,3 0,1.645 1.355,3 3,3 1.645,0 3,-1.355 3,-3 0,-1.645 -1.355,-3 -3,-3zM23,26.006c0.564,0 1,0.436 1,1 0,0.564 -0.436,1 -1,1 -0.564,0 -1,-0.436 -1,-1 0,-0.564 0.436,-1 1,-1z"
+        android:strokeLineCap="round" android:strokeLineJoin="round"/>
+    <path android:fillColor="#000000" android:fillType="evenOdd"
+        android:pathData="m24,2.006c-3.302,0 -6,2.698 -6,6 0,3.302 2.698,6 6,6 3.302,0 6,-2.698 6,-6 0,-3.302 -2.698,-6 -6,-6zM24,4.006c2.221,0 4,1.779 4,4 0,2.221 -1.779,4 -4,4 -2.221,0 -4,-1.779 -4,-4 0,-2.221 1.779,-4 4,-4z"
+        android:strokeLineCap="round" android:strokeLineJoin="round"/>
+    <path android:fillColor="#000000" android:fillType="evenOdd"
+        android:pathData="m22.586,5.592a1,1 0,0 0,-0.707 0.293,1 1,0 0,0 0,1.414l0.707,0.707 -0.707,0.707a1,1 0,0 0,0 1.414,1 1,0 0,0 1.414,0L24,9.42l0.707,0.707a1,1 0,0 0,1.414 0,1 1,0 0,0 0,-1.414l-0.707,-0.707 0.707,-0.707a1,1 0,0 0,0 -1.414,1 1,0 0,0 -0.707,-0.293 1,1 0,0 0,-0.707 0.293L24,6.592l-0.707,-0.707a1,1 0,0 0,-0.707 -0.293z"
+        android:strokeLineCap="round" android:strokeLineJoin="round"/>
+    <path android:fillColor="#000000" android:fillType="evenOdd"
+        android:pathData="m3.018,2.006a1,1 0,0 0,-1 1,1 1,0 0,0 1,1h1.18l2.65,13.242c-1.071,0.46 -1.83,1.527 -1.83,2.758 0,1.645 1.355,3 3,3h17a1,1 0,0 0,1 -1,1 1,0 0,0 -1,-1h-17c-0.571,0 -1,-0.429 -1,-1 0,-0.571 0.429,-1 1,-1h15a1,1 0,0 0,0.029 -0.006h2.971a1,1 0,0 0,0.988 -0.844l0.939,-5.969a1,1 0,0 0,-0.832 -1.145,1 1,0 0,0 -1.145,0.834L25.162,17h-16.324l-1.801,-8.994h12.084a1,1 0,0 0,1 -1,1 1,0 0,0 -1,-1h-12.484l-0.639,-3.195a1,1 0,0 0,-0.98 -0.805z"
+        android:strokeLineCap="round" android:strokeLineJoin="round"/>
+</vector>
