@@ -24,7 +24,7 @@
 - Obtenha todos os dados de transação e saldo
 
 ## Download APK ⬇️
-- [Release MyStock | v1.0.0-alpha]()
+- [Release MyStock | v1.0.0-alpha](https://github.com/ovitorhilario/MyStockApp/releases/download/v1.0.0-alpha/app-release.apk)
 
 ## Entrar em contato 
 - Linkedin : https://www.linkedin.com/in/vitor-hilario/
