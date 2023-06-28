@@ -9,7 +9,7 @@
 
 - Android | Kotlin ✔︎
 - MVVM + Clean Architecture ✔︎
-- Consumo de REST API 's com Coroutines e Retrofit2 ✔︎
+- Consumo de REST API 's com Coroutines ✔︎
 - Firebase Authentication ✔︎
 - Firebase Firestore | CRUD ✔︎
 - Firebase Crashlytics ✔︎
