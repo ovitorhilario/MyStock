@@ -2,6 +2,9 @@
 
 ✅ Este é um app de Controle de Estoque, nele é possível se autenticar criando uma conta, cada usuário pode cadastrar produtos, registrar transações de entrada e saída e, além disso, ter uma visão geral de todas as movimentações em tempo real. 
 
+## Download Disponível na Google Play ⬇️
+- [MyStock - Controle de Estoque](https://play.google.com/store/apps/details?id=com.vitorhilarioapps.mystock)
+  
 ## Tecnologias usadas 🚀
 
 - Android | Kotlin ✔︎
@@ -26,9 +29,6 @@
 - Controle suas transações de entrada e saída
 - Cadastre produtos em seu estoque
 - Obtenha todos os dados de transação e saldo
-
-## Download Disponível na Google Play ⬇️
-- [MyStock - Controle de Estoque](https://play.google.com/store/apps/details?id=com.vitorhilarioapps.mystock)
 
 ## Entrar em contato 
 - Linkedin : https://www.linkedin.com/in/vitor-hilario/
