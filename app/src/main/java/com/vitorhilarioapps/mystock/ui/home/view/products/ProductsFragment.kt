@@ -1,9 +1,11 @@
 package com.vitorhilarioapps.mystock.ui.home.view.products
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,8 +18,11 @@ import com.vitorhilarioapps.mystock.data.model.Product
 import com.vitorhilarioapps.mystock.ui.home.view.products.model.ProductItem
 import com.vitorhilarioapps.mystock.ui.home.viewmodel.FirestoreViewModel
 import com.vitorhilarioapps.mystock.utils.moneyType
+import com.vitorhilarioapps.mystock.utils.showErrorToast
 import com.vitorhilarioapps.mystock.utils.showSuccessToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProductsFragment : Fragment() {
 
@@ -57,21 +62,23 @@ class ProductsFragment : Fragment() {
     }
 
     private fun getProducts() {
-        lifecycleScope.launch {
-            // Loading...
-            showLoader()
+        // Loading...
+        showLoader()
 
+        lifecycleScope.launch {
             val products = viewModel.getProducts()
 
-            // Fetch data finished... OK!
-            hideLoader()
+            withContext(Dispatchers.Main) {
+                // Fetch data finished... OK!
+                hideLoader()
 
-            products?.takeIf { it.isNotEmpty() }?.let {
-                hideDataNotFound()
-                setupUI(it)
-            } ?: run {
-                setupUI(emptyList())
-                showDataNotFound()
+                products?.takeIf { it.isNotEmpty() }?.let {
+                    hideDataNotFound()
+                    setupUI(it)
+                } ?: run {
+                    setupUI(emptyList())
+                    showDataNotFound()
+                }
             }
         }
     }
@@ -98,7 +105,7 @@ class ProductsFragment : Fragment() {
             removeProduct = { removeProduct(it) },
             hasProduct = { hasProduct(it) },
             listSize = { selectedProducts.size },
-            resources = resources
+            getResource = { getResource(it) }
         )
     }
 
@@ -190,6 +197,14 @@ class ProductsFragment : Fragment() {
         }
     }
 
+    private fun getResource(id: Int): Drawable? {
+        return try {
+            ContextCompat.getDrawable(requireActivity(), id)
+        } catch (e: Exception) {
+            ContextCompat.getDrawable(requireActivity(), R.drawable.short_cut_red_bg)
+        }
+    }
+
     /*-----------------
     |    Firestore    |
     -----------------*/
@@ -204,11 +219,18 @@ class ProductsFragment : Fragment() {
             lifecycleScope.launch {
                 val success = viewModel.delProducts(products)
 
-                if (success) {
-                    requireActivity()
-                        .showSuccessToast(
-                            message = resources.getString(R.string.success_in_delete)
-                        )
+                withContext(Dispatchers.Main) {
+                    if (success) {
+                        requireActivity()
+                            .showSuccessToast(
+                                message = resources.getString(R.string.success_in_delete)
+                            )
+                    } else {
+                        requireActivity()
+                            .showErrorToast(
+                                error = getString(R.string.error_deleting_products_text)
+                            )
+                    }
                 }
             }
         }

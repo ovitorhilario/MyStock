@@ -15,7 +15,10 @@ import com.vitorhilarioapps.mystock.databinding.FragmentForgotPasswordBinding
 import com.vitorhilarioapps.mystock.ui.auth.viewmodel.AuthViewModel
 import com.vitorhilarioapps.mystock.utils.showErrorToast
 import com.vitorhilarioapps.mystock.utils.showSuccessToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import www.sanju.motiontoast.MotionToast
 
 class ForgotPasswordFragment: Fragment() {
 
@@ -53,10 +56,7 @@ class ForgotPasswordFragment: Fragment() {
                 ?.let { email ->
                     sendPasswordResetEmail(email)
                 } ?: run {
-                    requireActivity()
-                        .showErrorToast(
-                            error = getString(R.string.wrong_email)
-                        )
+                    printError(getString(R.string.wrong_email))
                 }
         }
     }
@@ -65,18 +65,33 @@ class ForgotPasswordFragment: Fragment() {
         lifecycleScope.launch {
             val success = viewModel.sendPasswordResetEmail(email)
 
-            if (success) {
-                requireActivity()
-                    .showSuccessToast(
-                        message = getString(R.string.email_sent)
-                    )
-            } else {
-                requireActivity()
-                    .showErrorToast(
-                        error = getString(R.string.error_sending_email_try_again_text)
-                    )
+            withContext(Dispatchers.Main) {
+                if (success) {
+                    printSuccess(getString(R.string.email_sent))
+                } else {
+                    printError(getString(R.string.error_sending_email_try_again_text))
+                }
             }
         }
+    }
+
+    /*---------------
+  |    Toast's    |
+  ---------------*/
+    private fun printSuccess(message: String) {
+        requireActivity()
+            .showSuccessToast(
+                message = message,
+                duration = MotionToast.SHORT_DURATION
+            )
+    }
+
+    private fun printError(error: String) {
+        requireActivity()
+            .showErrorToast(
+                error = error,
+                duration = MotionToast.SHORT_DURATION
+            )
     }
 
     private fun Editable?.strOrNull(): String? {

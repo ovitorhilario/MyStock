@@ -18,7 +18,11 @@ import com.vitorhilarioapps.mystock.R
 import com.vitorhilarioapps.mystock.databinding.FragmentValidateFirestoreBinding
 import com.vitorhilarioapps.mystock.ui.auth.viewmodel.AuthViewModel
 import com.vitorhilarioapps.mystock.ui.home.HomeActivity
+import com.vitorhilarioapps.mystock.utils.showErrorToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import www.sanju.motiontoast.MotionToast
 
 class ValidateFireStoreFragment : Fragment() {
 
@@ -63,12 +67,18 @@ class ValidateFireStoreFragment : Fragment() {
     ----------------*/
 
     private fun validateFireStore() {
-        val auth = Firebase.auth
-        val user = auth.currentUser
+        try {
+            val auth = Firebase.auth
+            val user = auth.currentUser
 
-        if (user != null && user.isEmailVerified) {
-            checkUserDb(user)
-        } else {
+            if (user != null && user.isEmailVerified) {
+                checkUserDb(user)
+            } else {
+                printError(getString(R.string.user_don_t_found_text))
+                backToSignIn()
+            }
+        } catch (e: Exception) {
+            printError(getString(R.string.error_in_validation_text))
             backToSignIn()
         }
     }
@@ -77,10 +87,12 @@ class ValidateFireStoreFragment : Fragment() {
         lifecycleScope.launch {
             val hasUserInDb = viewModel.hasUserInDb(user.uid)
 
-            if (hasUserInDb) {
-                startHomePage()
-            } else {
-                createDbForUser(user)
+            withContext(Dispatchers.Main) {
+                if (hasUserInDb) {
+                    startHomePage()
+                } else {
+                    createDbForUser(user)
+                }
             }
         }
     }
@@ -89,11 +101,24 @@ class ValidateFireStoreFragment : Fragment() {
         lifecycleScope.launch {
             val success = viewModel.createDbForUser(user)
 
-            if (success) {
-                startHomePage()
-            } else {
-                backToSignIn()
+            withContext(Dispatchers.Main) {
+                if (success) {
+                    startHomePage()
+                } else {
+                    backToSignIn()
+                }
             }
         }
+    }
+
+    /*---------------
+    |    Toast's    |
+    ---------------*/
+    private fun printError(error: String) {
+        requireActivity()
+            .showErrorToast(
+                error = error,
+                duration = MotionToast.SHORT_DURATION
+            )
     }
 }

@@ -17,7 +17,9 @@ import com.vitorhilarioapps.mystock.utils.getProductMap
 import com.vitorhilarioapps.mystock.utils.showErrorToast
 import com.vitorhilarioapps.mystock.utils.showInfoToast
 import com.vitorhilarioapps.mystock.utils.showSuccessToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddProductsFragment : Fragment() {
 
@@ -68,12 +70,12 @@ class AddProductsFragment : Fragment() {
                 // Required
                 val code = inputAddProductCode.text.intOrNull()
                 val name = inputAddProductName.text.strOrNull()
-                val description = inputAddProductDescription.text.strOrNull()
                 val purchasePrice = inputAddProductPurchasePrice.text.doubleOrNull()
                 val salePrice = inputAddProductSalePrice.text.doubleOrNull()
                 val amount = inputAddProductAmount.text.intOrNull()
 
                 // Additional - can be null
+                val description = inputAddProductDescription.text.strOrNull()
                 val weight = inputAddProductWeight.text.doubleOrNull()
                 val category = autoCompleteCategory.text.strOrNull()
                 val weightType = autoCompleteWeight.text.strOrNull()
@@ -120,22 +122,24 @@ class AddProductsFragment : Fragment() {
         lifecycleScope.launch {
             val hasProduct = viewModel.hasProduct(code)
 
-            if (!hasProduct) {
-                val successInAdd = viewModel.addProduct(code, product)
+            withContext(Dispatchers.Main) {
+                if (!hasProduct) {
+                    val successInAdd = viewModel.addProduct(code, product)
 
-                if (successInAdd) {
+                    if (successInAdd) {
+                        requireActivity()
+                            .showSuccessToast(
+                                message = resources.getString(R.string.product_added)
+                            )
+                    }
+
+                    findNavController().navigateUp()
+                } else {
                     requireActivity()
-                        .showSuccessToast(
-                            message = resources.getString(R.string.product_added)
+                        .showErrorToast(
+                            error = resources.getString(R.string.error_to_add_product)
                         )
                 }
-
-                findNavController().navigateUp()
-            } else {
-                requireActivity()
-                    .showErrorToast(
-                        error = resources.getString(R.string.error_to_add_product)
-                    )
             }
         }
     }

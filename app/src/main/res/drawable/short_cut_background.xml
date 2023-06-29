@@ -4,8 +4,8 @@
     android:enterFadeDuration="@android:integer/config_mediumAnimTime"
     android:exitFadeDuration="@android:integer/config_mediumAnimTime">
 
-    <item android:state_checked="true" android:drawable="@drawable/button_bg" />
-    <item android:state_pressed="true" android:drawable="@drawable/button_bg" />
+    <item android:state_checked="true" android:drawable="@drawable/input_selected_bg" />
+    <item android:state_pressed="true" android:drawable="@drawable/input_selected_bg" />
     <item android:state_enabled="false"  android:drawable="@drawable/input_bg" />
     <item android:drawable="@drawable/input_bg" />
 

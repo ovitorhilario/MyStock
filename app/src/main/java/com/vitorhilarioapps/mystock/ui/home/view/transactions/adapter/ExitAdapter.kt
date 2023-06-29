@@ -1,9 +1,11 @@
 package com.vitorhilarioapps.mystock.ui.home.view.transactions.adapter
 
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.vitorhilarioapps.mystock.R
@@ -21,7 +23,7 @@ class ExitAdapter(
     private val removeTransaction: (Int) -> Boolean,
     private val hasTransaction: (Int) -> Boolean,
     private val listSize: () -> Int,
-    private val resources: Resources
+    private val getResource: (Int) -> Drawable?
 ) : Adapter<ExitAdapter.ExitHolder>() {
 
     private var expandedPosition = -1;
@@ -38,13 +40,13 @@ class ExitAdapter(
         private val containerTransactionExitDropDrown = binding.containerTransactionExitDropDrown
 
         private fun setSelected() {
-            ivExitTransactionIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_confirm))
-            ivExitTransactionIcon.setBackgroundDrawable(resources.getDrawable(R.drawable.short_cut_green_bg))
+            ivExitTransactionIcon.setImageDrawable(getResource(R.drawable.ic_confirm))
+            ivExitTransactionIcon.setBackgroundDrawable(getResource(R.drawable.short_cut_green_bg))
         }
 
         private fun setUnselected() {
-            ivExitTransactionIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_purchase))
-            ivExitTransactionIcon.setBackgroundDrawable(resources.getDrawable(R.drawable.short_cut_red_bg))
+            ivExitTransactionIcon.setImageDrawable(getResource(R.drawable.ic_purchase))
+            ivExitTransactionIcon.setBackgroundDrawable(getResource(R.drawable.short_cut_red_bg))
         }
 
         private fun setupClickListeners(transactionItem: TransactionItem, position: Int) {

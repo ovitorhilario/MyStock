@@ -1,9 +1,12 @@
 package com.vitorhilarioapps.mystock.ui.home.view.transactions
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +22,10 @@ import com.vitorhilarioapps.mystock.ui.home.view.transactions.adapter.ExitAdapte
 import com.vitorhilarioapps.mystock.ui.home.view.transactions.model.TransactionType
 import com.vitorhilarioapps.mystock.ui.home.viewmodel.FirestoreViewModel
 import com.vitorhilarioapps.mystock.utils.showInfoToast
+import com.vitorhilarioapps.mystock.utils.showSuccessToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NestedTransactionFragment : Fragment() {
 
@@ -100,7 +106,7 @@ class NestedTransactionFragment : Fragment() {
                 },
                 hasTransaction = { selectedEntrys.contains(it) },
                 listSize = { selectedEntrys.size },
-                resources = resources
+                getResource = { getResource(it) }
             )
             is TransactionType.Purchase -> ExitAdapter(
                 data = transactions.map { TransactionItem(it, false) },
@@ -116,7 +122,7 @@ class NestedTransactionFragment : Fragment() {
                 },
                 hasTransaction = { selectedExits.contains(it) },
                 listSize = { selectedExits.size },
-                resources = resources
+                getResource = { getResource(it) }
             )
         }
 
@@ -216,31 +222,45 @@ class NestedTransactionFragment : Fragment() {
         binding.fabCancelDelete.visibility = View.GONE
     }
 
+    private fun getResource(id: Int): Drawable? {
+        return try {
+            ContextCompat.getDrawable(requireActivity(), id)
+        } catch (e: Exception) {
+            ContextCompat.getDrawable(requireActivity(), R.drawable.short_cut_red_bg)
+        }
+    }
+
     /*-----------------
     |    Firestore    |
     -----------------*/
 
     private fun getPurchaseTransitions() {
+        showLoader()
         lifecycleScope.launch {
-            showLoader()
             val exits = viewModel.getExits()
-            hideLoader()
 
-            exits?.let {
-                setupAdapter(it.sortedByDescending { exit -> exit.date.seconds })
-            } ?: setupEmptyUI()
+            withContext(Dispatchers.Main) {
+                hideLoader()
+
+                exits?.let {
+                    setupAdapter(it.sortedByDescending { exit -> exit.date.seconds })
+                } ?: setupEmptyUI()
+            }
         }
     }
 
     private fun getSaleTransitions() {
+        showLoader()
         lifecycleScope.launch {
-            showLoader()
             val entrys = viewModel.getEntrys()
-            hideLoader()
 
-            entrys?.let {
-                setupAdapter(it.sortedByDescending { entry -> entry.date.seconds })
-            } ?: setupEmptyUI()
+            withContext(Dispatchers.Main) {
+                hideLoader()
+
+                entrys?.let {
+                    setupAdapter(it.sortedByDescending { entry -> entry.date.seconds })
+                } ?: setupEmptyUI()
+            }
         }
     }
 
@@ -248,12 +268,14 @@ class NestedTransactionFragment : Fragment() {
         lifecycleScope.launch {
             val hasProducts = viewModel.getProducts()
 
-            hasProducts?.takeIf { it.isNotEmpty() }?.let {
-                val action = TransactionsFragmentDirections.actionTransactionsToSelectProducts(currentState.value ?: TransactionType.Sale)
-                findNavController().navigate(action)
-            } ?: run {
-                requireActivity()
-                    .showInfoToast(info = getString(R.string.dont_have_products))
+            withContext(Dispatchers.Main) {
+                hasProducts?.takeIf { it.isNotEmpty() }?.let {
+                    val action = TransactionsFragmentDirections.actionTransactionsToSelectProducts(currentState.value ?: TransactionType.Sale)
+                    findNavController().navigate(action)
+                } ?: run {
+                    requireActivity()
+                        .showInfoToast(info = getString(R.string.dont_have_products))
+                }
             }
         }
     }
@@ -262,10 +284,18 @@ class NestedTransactionFragment : Fragment() {
         lifecycleScope.launch {
             val success = viewModel.delExits(ids)
 
-            if (success) {
-
-            } else {
-
+            withContext(Dispatchers.Main) {
+                if (success) {
+                    requireActivity()
+                        .showSuccessToast(
+                            message = getString(R.string.success_in_delete_transaction_text)
+                        )
+                } else {
+                    requireActivity()
+                        .showSuccessToast(
+                            message = getString(R.string.error_deleting_transaction_text)
+                        )
+                }
             }
         }
     }
@@ -274,10 +304,18 @@ class NestedTransactionFragment : Fragment() {
         lifecycleScope.launch {
             val success = viewModel.delEntrys(ids)
 
-            if (success) {
-
-            } else {
-
+            withContext(Dispatchers.Main) {
+                if (success) {
+                    requireActivity()
+                        .showSuccessToast(
+                            message = getString(R.string.success_in_delete_transaction_text)
+                        )
+                } else {
+                    requireActivity()
+                        .showSuccessToast(
+                            message = getString(R.string.error_deleting_transaction_text)
+                        )
+                }
             }
         }
     }

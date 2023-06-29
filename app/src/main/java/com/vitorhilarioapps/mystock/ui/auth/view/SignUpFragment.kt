@@ -8,16 +8,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import com.vitorhilarioapps.mystock.R
 import com.vitorhilarioapps.mystock.databinding.FragmentSignUpBinding
 import com.vitorhilarioapps.mystock.ui.auth.viewmodel.AuthViewModel
 import com.vitorhilarioapps.mystock.utils.showErrorToast
-import com.vitorhilarioapps.mystock.utils.showInfoToast
+import com.vitorhilarioapps.mystock.utils.showSuccessToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import www.sanju.motiontoast.MotionToast
 
 class SignUpFragment : Fragment() {
@@ -26,6 +32,7 @@ class SignUpFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: AuthViewModel by activityViewModels()
 
+    private lateinit var auth: FirebaseAuth
     override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View {
         _binding = FragmentSignUpBinding.inflate(LayoutInflater.from(group?.context), group, false)
         return binding.root
@@ -34,6 +41,7 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initAuth()
         setupUI()
         setupClickListeners()
     }
@@ -56,110 +64,102 @@ class SignUpFragment : Fragment() {
         }
 
         binding.btnSignUp.setOnClickListener {
-            val userName = binding.inputUserNameSignUp.text?.trim().toString()
-            val email = binding.inputEmailSignUp.text?.trim().toString()
-            val password = binding.inputPasswordSignUp.text?.trim().toString()
-            val confirmPassword = binding.inputConfirmPasswordSignUp.text?.trim().toString()
+            val userName = binding.inputUserNameSignUp.text?.toString()?.trim() ?: ""
+            val email = binding.inputEmailSignUp.text?.toString()?.trim() ?: ""
+            val password = binding.inputPasswordSignUp.text?.toString()?.trim() ?: ""
+            val confirmPassword = binding.inputConfirmPasswordSignUp.text?.toString()?.trim() ?: ""
 
-            if (userName.isNotEmpty() && userName.isNotBlank()) {
+            val required = listOf(userName, email, password, confirmPassword)
+            val anyIsEmptyOrBlank = required.any { it.isBlank() || it.isEmpty() }
+
+            if (!anyIsEmptyOrBlank) {
                 if (password == confirmPassword && email.isNotEmpty() && password.isNotEmpty()) {
                     if (password.length >= 6) {
                         signUp(userName, email, password)
                     } else {
-                        requireActivity()
-                            .showErrorToast(
-                                error = resources.getString(R.string.little_password),
-                                duration = MotionToast.SHORT_DURATION
-                            )
+                        printError(getString(R.string.little_password))
                     }
                 } else {
-                    requireActivity()
-                        .showErrorToast(
-                            error = resources.getString(R.string.password_do_not_match),
-                            duration = MotionToast.SHORT_DURATION
-                        )
+                    printError(getString(R.string.password_do_not_match))
                 }
             } else {
-                requireActivity()
-                    .showErrorToast(
-                        error = getString(R.string.fill_in_all_information_text),
-                        duration = MotionToast.SHORT_DURATION
-                    )
+                printError(getString(R.string.fill_in_all_information_text))
             }
         }
     }
+
 
     /*---------------------
     |    Firebase Auth    |
     ---------------------*/
 
+    private fun initAuth() {
+        auth = Firebase.auth
+    }
+
     private fun signUp(userName: String, email: String, password: String) {
         lifecycleScope.launch {
             val signUpTask = viewModel.createUser(email, password)
-            val user = signUpTask?.result?.user
 
-            if (signUpTask?.isSuccessful == true && user != null) {
-                val updatedUser = userProfileChangeRequest {
-                    displayName = userName
-                }
+            withContext(Dispatchers.Main) {
+                if (signUpTask?.isSuccessful == true) {
+                    val user = auth.currentUser
 
-                user.updateProfile(updatedUser)
-                    .addOnCompleteListener { task ->
+                    val updatedUser = userProfileChangeRequest {
+                        displayName = userName
+                    }
+
+                    user?.updateProfile(updatedUser)?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            sendEmailVerification()
-                            backToSignIn()
+                            sendEmailVerification(user)
                         }
                     }
-            } else {
-                try {
-                    throw signUpTask?.exception!!
-                } catch (_: FirebaseAuthInvalidUserException) {
-                    invalidUser()
-                } catch (_: FirebaseAuthInvalidCredentialsException) {
-                    invalidCredentials()
-                } catch (_: Exception) {
-                    errorOnCreate()
+
+                } else {
+                    try {
+                        throw signUpTask?.exception!!
+                    } catch (_: FirebaseAuthInvalidUserException) {
+                        printError(getString(R.string.invalid_user))
+                    } catch (_: FirebaseAuthInvalidCredentialsException) {
+                        printError(getString(R.string.invalid_credentials))
+                    } catch (_: Exception) {
+                        printError(getString(R.string.auth_failed))
+                    }
                 }
             }
         }
     }
 
-    private fun sendEmailVerification() {
+    private fun sendEmailVerification(user: FirebaseUser) {
         lifecycleScope.launch {
-            val success = viewModel.sendEmailVerification()
+            val success = viewModel.sendEmailVerification(user)
 
-            if (success) {
-                requireActivity()
-                    .showInfoToast(info = resources.getString(R.string.sended_link))
-            } else {
-                requireActivity()
-                    .showErrorToast(
-                        error = getString(R.string.error_sending_email_text)
-                    )
+            withContext(Dispatchers.Main) {
+                if (success) {
+                    printSuccess(getString(R.string.sended_link))
+                } else {
+                    printError(getString(R.string.error_sending_email_text))
+                }
             }
         }
     }
 
-    private fun invalidUser() {
+
+   /*---------------
+   |    Toast's    |
+   ---------------*/
+    private fun printSuccess(message: String) {
         requireActivity()
-            .showErrorToast(
-                error = resources.getString(R.string.invalid_user),
+            .showSuccessToast(
+                message = message,
                 duration = MotionToast.SHORT_DURATION
             )
     }
 
-    private fun invalidCredentials() {
+    private fun printError(error: String) {
         requireActivity()
             .showErrorToast(
-                error = resources.getString(R.string.invalid_credentials),
-                duration = MotionToast.SHORT_DURATION
-            )
-    }
-
-    private fun errorOnCreate() {
-        requireActivity()
-            .showErrorToast(
-                error = resources.getString(R.string.auth_failed),
+                error = error,
                 duration = MotionToast.SHORT_DURATION
             )
     }

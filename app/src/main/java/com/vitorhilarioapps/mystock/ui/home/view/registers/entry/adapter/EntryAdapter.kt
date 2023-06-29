@@ -1,6 +1,7 @@
 package com.vitorhilarioapps.mystock.ui.home.view.registers.entry.adapter
 
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -14,7 +15,7 @@ class EntryAdapter (
     private val data: List<Product>,
     private val addProductCont: (Int) -> Int,
     private val removeProductCont: (Int) -> Int,
-    private val resources: Resources
+    private val getResource: (Int) -> Drawable?
 ) : Adapter<EntryAdapter.SingleHolder>() {
 
     inner class SingleHolder(binding: ProductSelectItemBinding) : ViewHolder(binding.root) {
@@ -35,7 +36,7 @@ class EntryAdapter (
             tvProductSelectAmount.text = product.amount.toString()
             tvProductSelectCont.text = "0"
             tvProductSelectPrice.text = product.salePrice.moneyType()
-            ivProductSelectPriceIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_sale_price))
+            ivProductSelectPriceIcon.setImageDrawable(getResource(R.drawable.ic_sale_price))
 
             btnProductSelectAdd.setOnClickListener {
                 val cont = addProductCont(product.code)

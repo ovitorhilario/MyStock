@@ -41,7 +41,7 @@ class ProfileFragment : Fragment() {
         viewModel.userDb.observe(viewLifecycleOwner) { userDb ->
             userDb?.let {
                 setupUI(userDb)
-                //setupClickListeners()
+                setupClickListeners()
             }
         }
     }

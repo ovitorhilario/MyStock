@@ -1,9 +1,11 @@
 package com.vitorhilarioapps.mystock.ui.home.view.selectproducts
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,7 +19,9 @@ import com.vitorhilarioapps.mystock.ui.home.viewmodel.FirestoreViewModel
 import com.vitorhilarioapps.mystock.ui.home.view.selectproducts.adapter.SelectProductsAdapter
 import com.vitorhilarioapps.mystock.ui.home.view.transactions.model.TransactionType
 import com.vitorhilarioapps.mystock.utils.showInfoToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SelectProductFragment : Fragment() {
 
@@ -48,13 +52,15 @@ class SelectProductFragment : Fragment() {
         lifecycleScope.launch {
             val products = viewModel.getProducts()
 
-            products?.let {
-                if (it.isNotEmpty()) {
-                    setupAdapter(it, args.transactionType)
-                } else {
-                    findNavController().navigateUp()
-                }
-            } ?: findNavController().navigateUp()
+            withContext(Dispatchers.Main) {
+                products?.let {
+                    if (it.isNotEmpty()) {
+                        setupAdapter(it, args.transactionType)
+                    } else {
+                        findNavController().navigateUp()
+                    }
+                } ?: findNavController().navigateUp()
+            }
         }
     }
 
@@ -87,8 +93,16 @@ class SelectProductFragment : Fragment() {
             listData = list.map { ProductItem(it, false) },
             addItem = { addItem(it) },
             deleteItem = { deleteItem(it) },
-            resources = resources
+            getResource = { getResource(it) }
         )
+    }
+
+    private fun getResource(id: Int): Drawable? {
+        return try {
+            ContextCompat.getDrawable(requireActivity(), id)
+        } catch (e: Exception) {
+            ContextCompat.getDrawable(requireActivity(), R.drawable.short_cut_red_bg)
+        }
     }
 
     /*-----------------

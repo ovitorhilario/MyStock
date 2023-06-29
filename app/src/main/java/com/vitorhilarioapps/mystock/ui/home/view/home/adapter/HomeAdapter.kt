@@ -2,6 +2,7 @@ package com.vitorhilarioapps.mystock.ui.home.view.home.adapter
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class HomeAdapter(
     private val openAddPurchase: () -> Unit,
     private val openAddSale: () -> Unit,
     private val resources: Resources,
+    private val getResource: (Int) -> Drawable?,
     private val period: Period,
 ) : Adapter<ViewHolder>() {
 
@@ -150,26 +152,26 @@ class HomeAdapter(
 
             tvShortcutDescriptionItem1.text = resources.getString(R.string.value_in_stock)
             tvShortcutValueItem1.text = items.stockValue.moneyType()
-            ivShortcutIconItem1.setImageDrawable(resources.getDrawable(R.drawable.ic_money_simbol))
-            ivShortcutIconItem1.background = resources.getDrawable(R.drawable.short_cut_yellow_bg)
+            ivShortcutIconItem1.setImageDrawable(getResource(R.drawable.ic_money_simbol))
+            ivShortcutIconItem1.background = getResource(R.drawable.short_cut_yellow_bg)
             layoutShortCutItem1.setOnClickListener { openShortCut(Companion.SHORT_CUT_TYPE.STOCK_VALUE.ID) }
 
             tvShortcutDescriptionItem2.text = resources.getString(R.string.all_products)
             tvShortcutValueItem2.text = buildString { append(items.amountProducts) }
-            ivShortcutIconItem2.setImageDrawable(resources.getDrawable(R.drawable.ic_info))
-            ivShortcutIconItem2.background = resources.getDrawable(R.drawable.short_cut_blue_bg)
+            ivShortcutIconItem2.setImageDrawable(getResource(R.drawable.ic_info))
+            ivShortcutIconItem2.background = getResource(R.drawable.short_cut_blue_bg)
             layoutShortCutItem2.setOnClickListener { openShortCut(Companion.SHORT_CUT_TYPE.AMOUNT_PRODUCT.ID) }
 
             tvShortcutDescriptionItem3.text = resources.getString(R.string.entry)
             tvShortcutValueItem3.text = items.entryValue.moneyType()
-            ivShortcutIconItem3.setImageDrawable(resources.getDrawable(R.drawable.ic_money_recive))
-            ivShortcutIconItem3.background = resources.getDrawable(R.drawable.short_cut_green_bg)
+            ivShortcutIconItem3.setImageDrawable(getResource(R.drawable.ic_money_recive))
+            ivShortcutIconItem3.background = getResource(R.drawable.short_cut_green_bg)
             layoutShortCutItem3.setOnClickListener { openShortCut(Companion.SHORT_CUT_TYPE.ENTRY_TRANSACTION.ID) }
 
             tvShortcutDescriptionItem4.text = resources.getString(R.string.exit)
             tvShortcutValueItem4.text = items.exitValue.moneyType()
-            ivShortcutIconItem4.setImageDrawable(resources.getDrawable(R.drawable.ic_money_send))
-            ivShortcutIconItem4.background = resources.getDrawable(R.drawable.short_cut_red_bg)
+            ivShortcutIconItem4.setImageDrawable(getResource(R.drawable.ic_money_send))
+            ivShortcutIconItem4.background = getResource(R.drawable.short_cut_red_bg)
             layoutShortCutItem4.setOnClickListener { openShortCut(Companion.SHORT_CUT_TYPE.EXIT_TRANSACTION.ID) }
         }
     }

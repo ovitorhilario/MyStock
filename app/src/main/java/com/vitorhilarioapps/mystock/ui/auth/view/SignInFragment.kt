@@ -1,27 +1,36 @@
 package com.vitorhilarioapps.mystock.ui.auth.view
 
-import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.content.IntentSender
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import com.vitorhilarioapps.mystock.R
 import com.vitorhilarioapps.mystock.databinding.FragmentSignInBinding
 import com.vitorhilarioapps.mystock.ui.auth.viewmodel.AuthViewModel
 import com.vitorhilarioapps.mystock.utils.showErrorToast
-import com.vitorhilarioapps.mystock.utils.showInfoToast
+import com.vitorhilarioapps.mystock.utils.showSuccessToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import www.sanju.motiontoast.MotionToast
 
 class SignInFragment : Fragment() {
@@ -30,7 +39,14 @@ class SignInFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: AuthViewModel by activityViewModels()
-    private lateinit var googleSignInClient: GoogleSignInClient
+
+    // Firebase
+    private lateinit var auth: FirebaseAuth
+
+    // Google SignIn
+    private lateinit var oneTapClient: SignInClient
+    private lateinit var signInRequest: BeginSignInRequest
+    private lateinit var signUpRequest: BeginSignInRequest
 
     override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View {
         _binding = FragmentSignInBinding.inflate(LayoutInflater.from(group?.context), group, false)
@@ -48,8 +64,13 @@ class SignInFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        if (viewModel.isAuthenticated()) {
-            updateUI()
+        try {
+            val user = auth.currentUser
+            if (user != null && user.isEmailVerified) {
+                updateUI()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in capture saved user.")
         }
     }
 
@@ -104,52 +125,124 @@ class SignInFragment : Fragment() {
     -------------------*/
 
     private fun initSignInClient() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
+        try {
+            auth = Firebase.auth
+            oneTapClient = Identity.getSignInClient(requireActivity())
 
-        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-    }
+            signInRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(
+                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                        .setSupported(true)
+                        .setServerClientId(getString(R.string.web_client_id))
+                        .setFilterByAuthorizedAccounts(true)
+                        .build())
+                .build()
 
-    private fun signInWithCredential(idToken: String) {
-        lifecycleScope.launch {
-            val user = viewModel.signInWithCredential(idToken)
-
-            user?.let {
-                updateUI()
-            } ?: run {
-                requireActivity()
-                    .showErrorToast(
-                        error = resources.getString(R.string.error_sign_in_google),
-                        duration = MotionToast.SHORT_DURATION)
-            }
-        }
-    }
-
-    private val signInGoogleLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { activityResult ->
-        val resultCode = activityResult.resultCode
-        val data = activityResult.data
-
-        if (resultCode == RESULT_OK) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                signInWithCredential(account.idToken!!)
-            } catch (e: ApiException) {
-                requireActivity()
-                    .showErrorToast(
-                        error = resources.getString(R.string.error_sign_in_google),
-                        duration = MotionToast.SHORT_DURATION)
-            }
+            signUpRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(
+                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                        .setSupported(true)
+                        .setServerClientId(getString(R.string.web_client_id))
+                        // Show all accounts on the device.
+                        .setFilterByAuthorizedAccounts(false)
+                        .build())
+                .build()
+        } catch (e: Exception) {
+            printError(getString(R.string.error_initializing_authentication_text))
         }
     }
 
     private fun signInGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        signInGoogleLauncher.launch(signInIntent)
+        oneTapClient.beginSignIn(signInRequest)
+            .addOnSuccessListener(requireActivity()) { result ->
+                try {
+                    startIntentSenderForResult(
+                        result.pendingIntent.intentSender, REQ_ONE_TAP,
+                        null, 0, 0, 0, null)
+                } catch (e: IntentSender.SendIntentException) {
+                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
+                }
+            }
+            .addOnFailureListener(requireActivity()) { e ->
+                // No Sign-Up Google Accounts found.
+                signUpGoogle()
+                Log.d(TAG, e.localizedMessage ?: "")
+            }
+    }
+
+    private fun signUpGoogle() {
+        oneTapClient.beginSignIn(signUpRequest)
+            .addOnSuccessListener(requireActivity()) { result ->
+                try {
+                    startIntentSenderForResult(
+                        result.pendingIntent.intentSender, REQ_ONE_TAP,
+                        null, 0, 0, 0, null)
+                } catch (e: IntentSender.SendIntentException) {
+                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
+                }
+            }
+            .addOnFailureListener(requireActivity()) { e ->
+                // No Google Accounts found.
+                requireActivity()
+                    .showErrorToast(
+                        error = getString(R.string.no_google_accounts_found_text)
+                    )
+
+                Log.d(TAG, e.localizedMessage)
+            }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQ_ONE_TAP -> {
+                try {
+                    val googleCredential = oneTapClient.getSignInCredentialFromIntent(data)
+                    val idToken = googleCredential.googleIdToken
+                    when {
+                        idToken != null -> {
+                            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                            auth.signInWithCredential(firebaseCredential)
+                                .addOnCompleteListener(requireActivity()) { task ->
+                                    if (task.isSuccessful) {
+                                        val user = auth.currentUser
+                                        if (user != null) {
+                                            updateUI()
+                                        }
+                                    } else {
+                                        printError(getString(R.string.sign_in_fail_text))
+                                        Log.w(TAG, "signInWithCredential:failure", task.exception)
+                                    }
+                                }
+                        }
+                        else -> {
+                            printError(getString(R.string.sign_in_fail_text))
+                            Log.d(TAG, "No ID token!")
+                        }
+                    }
+                } catch (e: ApiException) {
+
+                    when (e.statusCode) {
+                        CommonStatusCodes.CANCELED -> {
+                            Log.d(TAG, "One-tap dialog was closed.")
+                            // Don't re-prompt the user.
+                            showOneTapUI = false
+                        }
+                        CommonStatusCodes.NETWORK_ERROR -> {
+                            Log.d(TAG, "One-tap encountered a network error.")
+                            // Try again or just ignore.
+                            printError(getString(R.string.network_error_text))
+                        }
+                        else -> {
+                            printError(getString(R.string.error_getting_credential_text))
+                            Log.d(TAG, "Couldn't get credential from result." + " (${e.localizedMessage})")
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /*---------------------
@@ -159,45 +252,74 @@ class SignInFragment : Fragment() {
     private fun signIn(email: String, password: String) {
         lifecycleScope.launch {
             val signInTask = viewModel.signIn(email, password)
-            val user = signInTask?.result?.user
 
-            if (signInTask?.isSuccessful == true && user != null) {
-                if (user.isEmailVerified) {
-                    updateUI()
+            withContext(Dispatchers.Main) {
+                if (signInTask?.isSuccessful == true) {
+                    val user = auth.currentUser
+
+                    user?.let {
+                        if (it.isEmailVerified) {
+                            updateUI()
+                        } else {
+                            showDialogVerifyEmail(it)
+                        }
+                    } ?: run {
+                        printError(getString(R.string.error_sign_in))
+                    }
                 } else {
-                    showDialogVerifyEmail()
+                    printError(getString(R.string.error_sign_in))
                 }
-            } else {
-                requireActivity()
-                    .showErrorToast(
-                        error = resources.getString(R.string.error_sign_in),
-                        duration = MotionToast.SHORT_DURATION)
             }
         }
     }
 
-    private fun sendEmailVerification() {
+    private fun sendEmailVerification(user: FirebaseUser) {
         lifecycleScope.launch {
-            val success = viewModel.sendEmailVerification()
+            val success = viewModel.sendEmailVerification(user)
 
-            if (success) {
-                requireActivity()
-                    .showInfoToast(info = resources.getString(R.string.sended_link))
-            } else {
-                requireActivity()
-                    .showErrorToast(error = getString(R.string.error_sending_email_text))
+            withContext(Dispatchers.Main) {
+                if (success) {
+                    printSuccess(getString(R.string.sended_link))
+                } else {
+                    printError(getString(R.string.error_sending_email_text))
+                }
             }
         }
     }
 
-    private fun showDialogVerifyEmail() {
+    private fun showDialogVerifyEmail(user: FirebaseUser) {
         MaterialAlertDialogBuilder(requireActivity(),
             com.google.android.material.R.style.MaterialAlertDialog_Material3)
             .setMessage(R.string.send_new_link)
             .setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
-                sendEmailVerification()
+                sendEmailVerification(user)
             }
             .setPositiveButton(resources.getString(R.string.send)) { _, _ -> }
             .show()
+    }
+
+    /*---------------
+    |    Toast's    |
+    ---------------*/
+    private fun printSuccess(message: String) {
+        requireActivity()
+            .showSuccessToast(
+                message = message,
+                duration = MotionToast.SHORT_DURATION
+            )
+    }
+
+    private fun printError(error: String) {
+        requireActivity()
+            .showErrorToast(
+                error = error,
+                duration = MotionToast.SHORT_DURATION
+            )
+    }
+
+    companion object {
+        const val TAG = "SignInFragment"
+        private const val REQ_ONE_TAP = 2  // Can be any integer unique to the Activity
+        private var showOneTapUI = true
     }
 }

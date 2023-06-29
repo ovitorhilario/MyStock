@@ -1,9 +1,11 @@
 package com.vitorhilarioapps.mystock.ui.home.view.registers.entry
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +18,9 @@ import com.vitorhilarioapps.mystock.ui.home.view.registers.entry.adapter.EntryAd
 import com.vitorhilarioapps.mystock.ui.home.viewmodel.FirestoreViewModel
 import com.vitorhilarioapps.mystock.utils.showErrorToast
 import com.vitorhilarioapps.mystock.utils.showSuccessToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RegisterEntryFragment : Fragment() {
 
@@ -49,9 +53,11 @@ class RegisterEntryFragment : Fragment() {
         lifecycleScope.launch {
             val products = viewModel.getProducts(args.selectedProducts.toList())
 
-            products?.let {
-                setupAdapter(it)
-            } ?: Unit
+            withContext(Dispatchers.Main) {
+                products?.let {
+                    setupAdapter(it)
+                } ?: Unit
+            }
         }
     }
 
@@ -105,8 +111,16 @@ class RegisterEntryFragment : Fragment() {
 
                 selectionProductMap[code] ?: 0
             },
-            resources = resources
+            getResource = { getResource(it) }
         )
+    }
+
+    private fun getResource(id: Int): Drawable? {
+        return try {
+            ContextCompat.getDrawable(requireActivity(), id)
+        } catch (e: Exception) {
+            ContextCompat.getDrawable(requireActivity(), R.drawable.short_cut_red_bg)
+        }
     }
 
     /*-----------------
@@ -117,29 +131,31 @@ class RegisterEntryFragment : Fragment() {
         lifecycleScope.launch {
             val currentProducts = viewModel.getProducts(args.selectedProducts.toList())
 
-            currentProducts?.let {
-                currentProducts.filter { it.amount > 0 }.takeIf { it.isNotEmpty() }?.let { validProducts ->
-                    val isSuccessful = viewModel.addEntryTransaction(products, validProducts)
+            withContext(Dispatchers.Main) {
+                currentProducts?.let {
+                    currentProducts.filter { it.amount > 0 }.takeIf { it.isNotEmpty() }?.let { validProducts ->
+                        val isSuccessful = viewModel.addEntryTransaction(products, validProducts)
 
-                    if (isSuccessful) {
-                        requireActivity()
-                            .showSuccessToast(
-                                message = resources.getString(R.string.success_in_add_transaction)
-                            )
+                        if (isSuccessful) {
+                            requireActivity()
+                                .showSuccessToast(
+                                    message = resources.getString(R.string.success_in_add_transaction)
+                                )
 
                             findNavController().navigate(
                                 RegisterEntryFragmentDirections.actionRegisterEntryToTransactions(0)
                             )
-                    } else {
-                        requireActivity()
-                            .showErrorToast(
-                                error = resources.getString(R.string.error_to_add_transaction)
-                            )
+                        } else {
+                            requireActivity()
+                                .showErrorToast(
+                                    error = resources.getString(R.string.error_to_add_transaction)
+                                )
+                        }
                     }
                 }
-            }
 
-            getProducts()
+                getProducts()
+            }
         }
     }
 }

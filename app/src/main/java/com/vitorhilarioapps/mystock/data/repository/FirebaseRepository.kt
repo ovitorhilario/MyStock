@@ -1,15 +1,15 @@
 package com.vitorhilarioapps.mystock.data.repository
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.Timestamp
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.vitorhilarioapps.mystock.data.model.Product
@@ -49,13 +49,12 @@ class FirebaseRepository {
         return restoreTask
     }
 
-    fun sendEmailVerification(): Task<Void>? {
-        val sendEmailTask = user?.sendEmailVerification()
+    fun sendEmailVerification(user: FirebaseUser): Task<Void> {
+        val sendEmailTask = user.sendEmailVerification()
         return sendEmailTask
     }
 
-    fun signInWithCredential(idToken: String): Task<AuthResult> {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
+    fun signInWithCredential(credential: AuthCredential): Task<AuthResult> {
         val signInTask = auth.signInWithCredential(credential)
         return signInTask
     }
@@ -70,11 +69,9 @@ class FirebaseRepository {
 
         return createTask
     }
-    fun hasUserInDb(): Task<QuerySnapshot>? {
-        val getUserTask = user?.let {
-            db.collection("users")
-                .whereEqualTo("id", it.uid).get()
-        }
+    fun hasUserInDb(userId: String): Task<QuerySnapshot> {
+        val getUserTask = db.collection("users")
+            .whereEqualTo("id", userId).get()
 
         return getUserTask
     }

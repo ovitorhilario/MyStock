@@ -1,6 +1,7 @@
 package com.vitorhilarioapps.mystock.ui.home.view.transactions.adapter
 
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ class EntryAdapter(
     private val removeTransaction: (Int) -> Boolean,
     private val hasTransaction: (Int) -> Boolean,
     private val listSize: () -> Int,
-    private val resources: Resources
+    private val getResource: (Int) -> Drawable?
 ) : Adapter<EntryAdapter.EntryHolder>() {
 
     private var expandedPosition = -1;
@@ -38,13 +39,13 @@ class EntryAdapter(
         private val containerTransactionEntryDropDrown = binding.containerTransactionEntryDropDrown
 
         private fun setSelected() {
-            ivEntryTransactionIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_confirm))
-            ivEntryTransactionIcon.setBackgroundDrawable(resources.getDrawable(R.drawable.short_cut_green_bg))
+            ivEntryTransactionIcon.setImageDrawable(getResource(R.drawable.ic_confirm))
+            ivEntryTransactionIcon.setBackgroundDrawable(getResource(R.drawable.short_cut_green_bg))
         }
 
         private fun setUnselected() {
-            ivEntryTransactionIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_sale_price))
-            ivEntryTransactionIcon.setBackgroundDrawable(resources.getDrawable(R.drawable.short_cut_blue_bg))
+            ivEntryTransactionIcon.setImageDrawable(getResource(R.drawable.ic_sale_price))
+            ivEntryTransactionIcon.setBackgroundDrawable(getResource(R.drawable.short_cut_blue_bg))
         }
 
         private fun setupClickListeners(transactionItem: TransactionItem, position: Int) {

@@ -4,7 +4,6 @@ import android.app.Activity
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseUser
 import com.vitorhilarioapps.mystock.R
 import kotlinx.coroutines.tasks.await
 import www.sanju.motiontoast.MotionToast
@@ -54,7 +53,7 @@ fun Double.moneyType() : String {
 }
 
 fun Activity.showInfoToast(tittle: String = "Info", info: String, duration: Long = MotionToast.LONG_DURATION) {
-    MotionToast.createToast(this,
+    MotionToast.darkColorToast(this,
         tittle,
         info,
         MotionToastStyle.INFO,
@@ -64,7 +63,7 @@ fun Activity.showInfoToast(tittle: String = "Info", info: String, duration: Long
 }
 
 fun Activity.showSuccessToast(tittle: String = "Success", message: String, duration: Long = MotionToast.LONG_DURATION) {
-    MotionToast.createToast(this,
+    MotionToast.darkColorToast(this,
         tittle,
         message,
         MotionToastStyle.SUCCESS,
@@ -74,7 +73,7 @@ fun Activity.showSuccessToast(tittle: String = "Success", message: String, durat
 }
 
 fun Activity.showErrorToast(tittle: String = "Error", error: String, duration: Long = MotionToast.LONG_DURATION) {
-    MotionToast.createToast(this,
+    MotionToast.darkColorToast(this,
         tittle,
         error,
         MotionToastStyle.ERROR,

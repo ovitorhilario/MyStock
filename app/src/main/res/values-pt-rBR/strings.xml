@@ -144,5 +144,21 @@
     <string name="error_sending_email_try_again_text">Erro ao enviar email. Tente novamente.</string>
     <string name="error_sending_email_text">Erro ao mandar email de verificação!</string>
     <string name="fill_in_all_information_text">Preencha todas as informações!</string>
+    <string name="success_in_delete_transaction_text">Sucesso ao deletar as transações!</string>
+    <string name="error_deleting_transaction_text">Erro ao deletar as transações!</string>
+    <string name="error_deleting_products_text">Erro ao deletar os produtos!</string>
+    <string name="no_google_accounts_found_text">" Nenhuma Conta do Google encontrada."</string>
+    <string name="sign_in_fail_text">Error ao tentar Logar</string>
+    <string name="network_error_text">Erro de Internet</string>
+    <string name="error_getting_credential_text">Erro com a credencial do Google</string>
+    <string name="user_don_t_found_text">Usuário não encontrado</string>
+    <string name="error_initializing_authentication_text">Erro ao inicializar autenticação</string>
+    <string name="error_in_validation_text">Erro na validação</string>
+    <string name="rate_the_app">Avaliar o aplicativo</string>
+    <string name="bug_report">Reportar Bug</string>
+    <string name="rate_the_app_question">Deseja avaliar o APP na Google Play?</string>
+    <string name="bug_report_question">Deseja reportar um bug? Você será redirecionado para o link do formulário.</string>
+    <string name="report">Reportar</string>
+    <string name="rate">Avaliar</string>
 
 </resources>

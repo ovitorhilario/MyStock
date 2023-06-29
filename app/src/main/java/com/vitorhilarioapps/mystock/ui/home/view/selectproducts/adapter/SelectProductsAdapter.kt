@@ -2,6 +2,7 @@ package com.vitorhilarioapps.mystock.ui.home.view.selectproducts.adapter
 
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ class SelectProductsAdapter(
     private val transactionType: TransactionType,
     private val addItem: (Int) -> Boolean,
     private val deleteItem: (Int) -> Boolean,
-    private val resources: Resources
+    private val getResource: (Int) -> Drawable?
 ) : Adapter<SelectProductsAdapter.SingleHolder>() {
 
     private var expandedPosition: Int = -1
@@ -115,23 +116,23 @@ class SelectProductsAdapter(
         }
 
         private fun setSelected() {
-            ivProductIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_confirm))
-            ivProductIcon.setBackgroundDrawable(resources.getDrawable(R.drawable.short_cut_green_bg))
+            ivProductIcon.setImageDrawable(getResource(R.drawable.ic_confirm))
+            ivProductIcon.setBackgroundDrawable(getResource(R.drawable.short_cut_green_bg))
         }
 
         private fun setUnselected() {
-            ivProductIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_product))
-            ivProductIcon.setBackgroundDrawable(resources.getDrawable(R.drawable.short_cut_yellow_bg))
+            ivProductIcon.setImageDrawable(getResource(R.drawable.ic_product))
+            ivProductIcon.setBackgroundDrawable(getResource(R.drawable.short_cut_yellow_bg))
         }
 
         private fun dropDownEnable() {
             containerProductSubInfo.visibility = View.VISIBLE
-            btnProductShowSubInfo.setImageDrawable(resources.getDrawable(R.drawable.ic_arrow_up))
+            btnProductShowSubInfo.setImageDrawable(getResource(R.drawable.ic_arrow_up))
         }
 
         private fun dropDrownDisable() {
             containerProductSubInfo.visibility = View.GONE
-            btnProductShowSubInfo.setImageDrawable(resources.getDrawable(R.drawable.ic_arrow_down))
+            btnProductShowSubInfo.setImageDrawable(getResource(R.drawable.ic_arrow_down))
         }
 
         fun bind(productItem: ProductItem, position: Int) {

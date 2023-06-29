@@ -133,6 +133,26 @@
     <string name="error_sending_email_try_again_text">Error sending email. Try Again!</string>
     <string name="error_sending_email_text">Error sending verification email!</string>
     <string name="fill_in_all_information_text">Fill in all information!</string>
+    <string name="success_in_delete_transaction_text">Success in delete Transaction!</string>
+    <string name="error_deleting_transaction_text">Error deleting Transaction!</string>
+    <string name="error_deleting_products_text">Error deleting products</string>
+    <string name="web_client_id" translatable="false">638782270067-821vjcom4h6smklrsv8rmuso9old6mi1.apps.googleusercontent.com</string>
+    <string name="no_google_accounts_found_text">No Google Accounts found.</string>
+    <string name="sign_in_fail_text">Sign-in Fail</string>
+    <string name="network_error_text">Network error</string>
+    <string name="error_getting_credential_text">Error getting credential</string>
+    <string name="user_don_t_found_text">User don\'t found</string>
+    <string name="error_initializing_authentication_text">Error initializing authentication</string>
+    <string name="error_in_validation_text">Error in validation.</string>
+    <string name="rate_the_app">Rate the app</string>
+    <string name="bug_report">Bug Report</string>
+    <string name="rate_the_app_question">Do you want to report a bug? You will be redirected to the form link.</string>
+    <string name="bug_report_question">Do you want to rate the APP on Google Play?</string>
+
+    <string name="rate_the_app_url" translatable="false">https://play.google.com/store/apps/details?id=com.vitorhilarioapps.mystock</string>
+    <string name="bug_report_url" translatable="false">https://forms.gle/r6zUymdrtdQYLav2A</string>
+    <string name="report">Report</string>
+    <string name="rate">Rate</string>
 
     <string-array name="category_list">
         <item></item>

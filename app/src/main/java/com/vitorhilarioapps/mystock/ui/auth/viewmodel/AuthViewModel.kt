@@ -24,26 +24,28 @@ class AuthViewModel : ViewModel() {
     suspend fun signIn(email: String, password: String): Task<AuthResult>? =
         runAuthTask(firebaseRepository.signIn(email, password))
 
-    suspend fun signInWithCredential(idToken: String): Task<AuthResult>? =
-        runAuthTask(firebaseRepository.signInWithCredential(idToken))
+    /*
+    suspend fun signInWithCredential(credential: AuthCredential): Task<AuthResult>? =
+        runAuthTask(firebaseRepository.signInWithCredential(credential))
+    */
 
     suspend fun sendPasswordResetEmail(email: String): Boolean =
         runVoidTask(firebaseRepository.sendPasswordResetEmail(email))
 
-    suspend fun sendEmailVerification(): Boolean =
-        runVoidTask(firebaseRepository.sendEmailVerification())
+    suspend fun sendEmailVerification(user: FirebaseUser): Boolean =
+        runVoidTask(firebaseRepository.sendEmailVerification(user))
 
+    /*
     fun isAuthenticated(): Boolean = firebaseRepository.isAuthenticated()
+    */
 
     suspend fun hasUserInDb(userId: String): Boolean {
-        val task = firebaseRepository.hasUserInDb()
-        return task?.let {
-            try {
-                val docs = task.await().documents
-                docs.any { it.id == userId }
-            } catch (e: Exception) {
-                false
-            }
-        } ?: false
+        val task = firebaseRepository.hasUserInDb(userId)
+        return try {
+            val docs = task.await().documents
+            docs.any { it.id == userId }
+        } catch (e: Exception) {
+            false
+        }
     }
 }

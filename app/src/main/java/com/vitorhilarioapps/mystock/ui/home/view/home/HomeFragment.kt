@@ -1,9 +1,11 @@
 package com.vitorhilarioapps.mystock.ui.home.view.home
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
@@ -18,7 +20,9 @@ import com.vitorhilarioapps.mystock.data.model.Product
 import com.vitorhilarioapps.mystock.data.model.Transaction
 import com.vitorhilarioapps.mystock.ui.home.viewmodel.FirestoreViewModel
 import com.vitorhilarioapps.mystock.utils.showInfoToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
@@ -49,22 +53,23 @@ class HomeFragment : Fragment() {
     -------------------------*/
 
     private fun getData() {
+        showLoader()
         lifecycleScope.launch {
-            // Loading...
-            showLoader()
-
             val products = viewModel.getProducts()
             val entrys = viewModel.getEntrys()
             val exits = viewModel.getExits()
 
             // Fetch data finished... OK!
-            hideLoader()
 
-            setupUI(
-                products ?: emptyList(),
-                entrys ?: emptyList(),
-                exits ?: emptyList()
-            )
+            withContext(Dispatchers.Main) {
+                hideLoader()
+
+                setupUI(
+                    products ?: emptyList(),
+                    entrys ?: emptyList(),
+                    exits ?: emptyList()
+                )
+            }
         }
     }
 
@@ -163,6 +168,7 @@ class HomeFragment : Fragment() {
             openAddPurchase = { openAddPurchase(hasProducts) },
             openAddSale = { openAddSale(hasProducts) },
             resources = resources,
+            getResource = { getResource(it) },
             period = period
         )
 
@@ -243,6 +249,14 @@ class HomeFragment : Fragment() {
             .showInfoToast(
                 info = resources.getString(R.string.dont_have_products)
             )
+    }
+
+    private fun getResource(id: Int): Drawable? {
+        return try {
+            ContextCompat.getDrawable(requireActivity(), id)
+        } catch (e: Exception) {
+            ContextCompat.getDrawable(requireActivity(), R.drawable.short_cut_red_bg)
+        }
     }
 
     sealed class Period {
