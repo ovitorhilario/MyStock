@@ -18,6 +18,7 @@
 - ViewGroups, SwipeRefreshLayout, ViewBinding ✔︎
 - Picasso ✔︎
 - Glide ✔︎
+- JUnit, Mockk ✔︎
 
 ## ScreenShot 📸
 
