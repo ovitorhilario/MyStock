@@ -18,8 +18,8 @@ android {
         applicationId = "com.vitorhilarioapps.mystock"
         minSdk = 24
         targetSdk = 33
-        versionCode = 12
-        versionName = "v1.0.6-alpha"
+        versionCode = 13
+        versionName = "v1.1.0-alpha"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,7 +42,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
-
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -54,9 +53,7 @@ android {
     viewBinding {
         enable = true
     }
-
 }
-
 
 dependencies {
 
@@ -70,6 +67,7 @@ dependencies {
 
     // Play Services
     implementation(libs.play.services.auth)
+    implementation("com.google.android.gms:play-services-code-scanner:16.0.0")
 
     // NavigationUI
     implementation(libs.androidx.navigation.fragment.ktx)

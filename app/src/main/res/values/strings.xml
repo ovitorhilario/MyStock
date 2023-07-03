@@ -153,6 +153,8 @@
     <string name="bug_report_url" translatable="false">https://forms.gle/r6zUymdrtdQYLav2A</string>
     <string name="report">Report</string>
     <string name="rate">Rate</string>
+    <string name="the_barcode_can_only_contain_numbers_text">The barcode can only contain numbers!</string>
+    <string name="error">Error</string>
 
     <string-array name="category_list">
         <item></item>

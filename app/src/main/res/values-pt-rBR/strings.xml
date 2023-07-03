@@ -160,5 +160,7 @@
     <string name="bug_report_question">Deseja reportar um bug? Você será redirecionado para o link do formulário.</string>
     <string name="report">Reportar</string>
     <string name="rate">Avaliar</string>
+    <string name="the_barcode_can_only_contain_numbers_text">O código de barras só pode contér números!</string>
+    <string name="error">Erro</string>
 
 </resources>

@@ -6,16 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import com.vitorhilarioapps.mystock.R
 import com.vitorhilarioapps.mystock.databinding.FragmentAddProductsBinding
 import com.vitorhilarioapps.mystock.ui.home.viewmodel.FirestoreViewModel
 import com.vitorhilarioapps.mystock.utils.getProductMap
 import com.vitorhilarioapps.mystock.utils.showErrorToast
-import com.vitorhilarioapps.mystock.utils.showInfoToast
 import com.vitorhilarioapps.mystock.utils.showSuccessToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,10 +60,7 @@ class AddProductsFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.btnAddProductsScanBarcode.setOnClickListener {
-            requireActivity()
-                .showInfoToast(
-                    info = getString(R.string.the_scanner_will_be_present_in_the_next_att_text)
-                )
+            scanBarcode()
         }
 
         binding.btnAddProducts.setOnClickListener {
@@ -142,6 +140,34 @@ class AddProductsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun scanBarcode() {
+        val scanner = GmsBarcodeScanning.getClient(requireActivity())
+
+        scanner.startScan()
+            .addOnSuccessListener { barcode ->
+                val rawValue = barcode.rawValue
+
+                rawValue?.takeIf { it.isDigitsOnly() }?.let {
+                    val number = rawValue.toLongOrNull()
+                    number?.let {
+                        binding.inputAddProductCode.setText(it.toString())
+                    } ?: run {
+                        requireActivity()
+                            .showErrorToast(
+                                error = getString(R.string.the_barcode_can_only_contain_numbers_text)
+                            )
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+
+                requireActivity()
+                    .showErrorToast(
+                        error = buildString { append(resources.getString(R.string.error), e.message.toString()) }
+                    )
+            }
     }
 
     private fun Editable?.strOrNull(): String? {
