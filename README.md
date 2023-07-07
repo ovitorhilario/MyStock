@@ -1,6 +1,6 @@
 # MyStock 📦
 
-✅ Este é um app de Controle de Estoque, nele é possível se autenticar criando uma conta, cada usuário pode cadastrar produtos, registrar transações de entrada e saída e, além disso, ter uma visão geral de todas as movimentações em tempo real. 
+Este é um app de Controle de Estoque, nele é possível se autenticar criando uma conta, cada usuário pode cadastrar produtos, registrar transações de entrada e saída e, além disso, ter uma visão geral de todas as movimentações em tempo real. 
 
 ## Download Disponível na Google Play ⬇️
 - [MyStock - Controle de Estoque](https://play.google.com/store/apps/details?id=com.vitorhilarioapps.mystock)
@@ -10,9 +10,7 @@
 - Android | Kotlin ✔︎
 - MVVM + Clean Architecture ✔︎
 - Consumo de REST API 's com Coroutines ✔︎
-- Firebase Authentication ✔︎
-- Firebase Firestore | CRUD ✔︎
-- Firebase Crashlytics ✔︎
+- Firebase Authentication, Firestore e Crashlytics ✔︎
 - LiveData ✔︎
 - Navigation Component ✔︎
 - ViewGroups, SwipeRefreshLayout, ViewBinding ✔︎
