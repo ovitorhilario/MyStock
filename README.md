@@ -7,16 +7,16 @@ Este é um app de Controle de Estoque, nele é possível se autenticar criando u
   
 ## Tecnologias usadas 🚀
 
-- Android | Kotlin ✔︎
-- MVVM + Clean Architecture ✔︎
-- Consumo de REST API 's com Coroutines ✔︎
-- Firebase Authentication, Firestore e Crashlytics ✔︎
-- LiveData ✔︎
-- Navigation Component ✔︎
-- ViewGroups, SwipeRefreshLayout, ViewBinding ✔︎
-- Picasso ✔︎
-- Glide ✔︎
-- JUnit, Mockk ✔︎
+- Android | Kotlin 
+- MVVM + Clean Architecture 
+- ML Kit's barcode scanning API | Integração com detector de código de barras
+- Coroutines 
+- Firebase Authentication, Firestore e Crashlytics 
+- LiveData 
+- Navigation Component 
+- ViewGroups, SwipeRefreshLayout, ViewBinding 
+- Picasso 
+- Glide 
 
 ## ScreenShot 📸
 
