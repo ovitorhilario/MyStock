@@ -3,8 +3,14 @@ package com.vitorhilarioapps.mystock.ui.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
+import androidx.credentials.exceptions.ClearCredentialException
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,18 +22,23 @@ import com.vitorhilarioapps.mystock.databinding.ActivityHomeBinding
 import com.vitorhilarioapps.mystock.databinding.HeaderNavViewBinding
 import com.vitorhilarioapps.mystock.ui.auth.AuthActivity
 import com.vitorhilarioapps.mystock.ui.home.viewmodel.FirestoreViewModel
+import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
     private val viewModel: FirestoreViewModel by viewModels()
+    private lateinit var credentialManager: CredentialManager
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(binding.root)
+
+        credentialManager = CredentialManager.create(this)
 
         setupUI()
         setupClickListeners()
@@ -129,7 +140,20 @@ class HomeActivity : AppCompatActivity() {
 
     private fun logout() {
         viewModel.getAuth().signOut()
-        startActivity(Intent(this, AuthActivity::class.java))
-        finish()
+
+        lifecycleScope.launch {
+            try {
+                val clearRequest = ClearCredentialStateRequest()
+                credentialManager.clearCredentialState(clearRequest)
+
+                val intent = Intent(this@HomeActivity, AuthActivity::class.java).apply {
+                    putExtra("DISABLE_AUTO_SIGN_IN", true)
+                }
+                startActivity(intent)
+                finish()
+            } catch (e: ClearCredentialException) {
+                Log.e("HomeActivity", "Couldn't clear user credentials: ${e.localizedMessage}")
+            }
+        }
     }
 }

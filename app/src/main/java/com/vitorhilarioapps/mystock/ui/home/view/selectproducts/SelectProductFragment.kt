@@ -31,7 +31,7 @@ class SelectProductFragment : Fragment() {
     private val viewModel: FirestoreViewModel by activityViewModels()
     private val args by navArgs<SelectProductFragmentArgs>()
 
-    private val selectedItems: MutableList<Int> = mutableListOf()
+    private val selectedItems: MutableList<String> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View {
         _binding = FragmentSelectProductsBinding.inflate(inflater, group, false)
@@ -70,9 +70,9 @@ class SelectProductFragment : Fragment() {
             if (selectedItems.isNotEmpty()) {
                 val action = when (args.transactionType as TransactionType) {
                     is TransactionType.Sale -> SelectProductFragmentDirections
-                        .actionFragmentSelectProductsToFragmentRegisterEntry(selectedItems.toIntArray())
+                        .actionFragmentSelectProductsToFragmentRegisterEntry(selectedItems.toTypedArray())
                     is TransactionType.Purchase -> SelectProductFragmentDirections
-                        .actionFragmentSelectProductsToFragmentRegisterExit(selectedItems.toIntArray())
+                        .actionFragmentSelectProductsToFragmentRegisterExit(selectedItems.toTypedArray())
                 }
 
                 findNavController().navigate(action)
@@ -109,14 +109,14 @@ class SelectProductFragment : Fragment() {
     |    Firestore    |
     -----------------*/
 
-    private fun addItem(code: Int): Boolean {
+    private fun addItem(code: String): Boolean {
         return if (!selectedItems.contains(code)) {
             selectedItems.add(code)
             true
         } else false
     }
 
-    private fun deleteItem(code: Int): Boolean {
+    private fun deleteItem(code: String): Boolean {
         return if (selectedItems.contains(code)) {
             selectedItems.remove(code)
             true

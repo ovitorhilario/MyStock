@@ -18,7 +18,6 @@ import com.vitorhilarioapps.mystock.utils.showSuccessToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import www.sanju.motiontoast.MotionToast
 
 class ForgotPasswordFragment: Fragment() {
 
@@ -82,7 +81,6 @@ class ForgotPasswordFragment: Fragment() {
         requireActivity()
             .showSuccessToast(
                 message = message,
-                duration = MotionToast.SHORT_DURATION
             )
     }
 
@@ -90,7 +88,6 @@ class ForgotPasswordFragment: Fragment() {
         requireActivity()
             .showErrorToast(
                 error = error,
-                duration = MotionToast.SHORT_DURATION
             )
     }
 

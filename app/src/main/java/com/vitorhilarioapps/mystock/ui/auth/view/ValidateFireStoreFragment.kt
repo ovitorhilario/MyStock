@@ -11,9 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
 import com.vitorhilarioapps.mystock.R
 import com.vitorhilarioapps.mystock.databinding.FragmentValidateFirestoreBinding
 import com.vitorhilarioapps.mystock.ui.auth.viewmodel.AuthViewModel
@@ -22,7 +22,6 @@ import com.vitorhilarioapps.mystock.utils.showErrorToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import www.sanju.motiontoast.MotionToast
 
 class ValidateFireStoreFragment : Fragment() {
 
@@ -118,7 +117,6 @@ class ValidateFireStoreFragment : Fragment() {
         requireActivity()
             .showErrorToast(
                 error = error,
-                duration = MotionToast.SHORT_DURATION
             )
     }
 }

@@ -7,7 +7,7 @@ data class UserDb (
     val name: String,
     val email: String,
     val photoUrl: Uri?,
-    val id: Int,
+    val id: String,
     val premium: String,
     val since: Timestamp
 )

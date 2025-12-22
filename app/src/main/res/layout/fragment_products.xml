@@ -61,6 +61,18 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_products_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/gap_normal"
+        android:contentDescription="@string/btn_fab_edit_product"
+        android:src="@drawable/ic_pencil"
+        android:visibility="gone"
+        android:textSize="@dimen/font_size_normal"
+        app:layout_constraintBottom_toTopOf="@id/fab_products_add"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_products_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

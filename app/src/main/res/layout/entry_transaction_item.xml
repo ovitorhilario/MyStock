@@ -29,7 +29,7 @@
         android:layout_marginEnd="@dimen/gap_normal"
         android:maxLines="1"
         android:text="@string/lorem_ipsum"
-        android:textColor="#31F40E"
+        android:textColor="@color/green_dark"
         android:textSize="@dimen/font_size_normal"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/btn_entry_transaction_drop_down"

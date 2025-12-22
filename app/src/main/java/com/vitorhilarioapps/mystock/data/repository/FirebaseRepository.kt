@@ -1,23 +1,25 @@
 package com.vitorhilarioapps.mystock.data.repository
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.firestore
 import com.vitorhilarioapps.mystock.data.model.Product
 import com.vitorhilarioapps.mystock.utils.getEntryTransactionMap
 import com.vitorhilarioapps.mystock.utils.getExitTransactionMap
 import com.vitorhilarioapps.mystock.utils.getMap
 import com.vitorhilarioapps.mystock.utils.getSubTransactionMap
 import com.vitorhilarioapps.mystock.utils.previousInfo
+import kotlinx.coroutines.tasks.await
 
 class FirebaseRepository {
 
@@ -69,6 +71,7 @@ class FirebaseRepository {
 
         return createTask
     }
+
     fun hasUserInDb(userId: String): Task<QuerySnapshot> {
         val getUserTask = db.collection("users")
             .whereEqualTo("id", userId).get()
@@ -85,6 +88,57 @@ class FirebaseRepository {
         return getUserTask
     }
 
+    suspend fun clearUserFirestoreData(): Boolean {
+        val uid = user?.uid ?: return false
+
+        return try {
+            val batch = db.batch()
+            val userDocRef = db.collection("users").document(uid)
+
+            // 1. Coletar e agendar deleção de PRODUTOS
+            val productsSnapshot = userDocRef.collection("products").get().await()
+            for (doc in productsSnapshot.documents) {
+                batch.delete(doc.reference)
+            }
+
+            // 2. Coletar e agendar deleção de ENTRADAS
+            val entrysSnapshot = userDocRef.collection("entrys").get().await()
+            for (doc in entrysSnapshot.documents) {
+                batch.delete(doc.reference)
+            }
+
+            // 3. Coletar e agendar deleção de SAÍDAS
+            val exitsSnapshot = userDocRef.collection("exits").get().await()
+            for (doc in exitsSnapshot.documents) {
+                batch.delete(doc.reference)
+            }
+
+            // 4. Agendar deleção do DOCUMENTO DO USUÁRIO
+            batch.delete(userDocRef)
+
+            // 5. Executar tudo de uma vez
+            batch.commit().await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun deleteUserAuth() {
+        user?.delete()?.await()
+    }
+
+    suspend fun reauthenticateWithCredential(credential: AuthCredential) {
+        val user = auth.currentUser ?: return
+        user.reauthenticate(credential).await()
+    }
+
+    fun isGoogleAccount(): Boolean {
+        // Verifica se algum dos providers vinculados é google.com
+        return user?.providerData?.any { it.providerId == "google.com" } ?: false
+    }
+
     fun getProducts(): Task<QuerySnapshot>? {
         val getProductsTask = user?.let {
             db.collection("users").document(it.uid)
@@ -94,17 +148,46 @@ class FirebaseRepository {
         return getProductsTask
     }
 
-    fun getProducts(codes: List<Int>): Task<QuerySnapshot>? {
-        val getProductsTask = user?.let {
-            db.collection("users").document(it.uid)
-                .collection("products")
-                .whereIn("code", codes).get()
+    suspend fun getProducts(codes: List<String>): List<DocumentSnapshot> {
+        val uid = user?.uid ?: return emptyList()
+        
+        if (codes.isEmpty()) {
+            return emptyList()
         }
+        
+        val productsRef = db.collection("users")
+            .document(uid)
+            .collection("products")
+        
+        return try {
+            val results = mutableListOf<DocumentSnapshot>()
 
-        return getProductsTask
+            codes.chunked(10).forEach { chunk ->
+                val snapshot = productsRef
+                    .whereIn(FieldPath.documentId(), chunk)
+                    .get()
+                    .await()
+                results.addAll(snapshot.documents)
+            }
+            
+            results
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
     }
 
-    fun delProducts(codes: List<Int>): Task<Void>? {
+    fun getProduct(code: String): Task<DocumentSnapshot>? {
+        val getProductTask = user?.let {
+            db.collection("users").document(it.uid)
+                .collection("products")
+                .document(code).get()
+        }
+
+        return getProductTask
+    }
+
+    fun delProducts(codes: List<String>): Task<Void>? {
         val delProductsRef = user?.let {
             db.collection("users").document(it.uid)
                 .collection("products")
@@ -113,7 +196,7 @@ class FirebaseRepository {
         val delProductsTask = delProductsRef?.run {
             db.runBatch {
                 codes.forEach { code ->
-                    delProductsRef.document(code.toString()).delete()
+                    delProductsRef.document(code).delete()
                 }
             }
         }
@@ -173,7 +256,7 @@ class FirebaseRepository {
         return getExitsTask
     }
 
-    fun hasProduct(code: Int): Task<QuerySnapshot>? {
+    fun hasProduct(code: String): Task<QuerySnapshot>? {
         val hasProductTask = user?.let {
             db.collection("users").document(it.uid)
                 .collection("products")
@@ -183,17 +266,26 @@ class FirebaseRepository {
         return hasProductTask
     }
 
-    fun addProduct(code: Int, product: HashMap<String, Comparable<*>>): Task<Void>? {
+    fun addProduct(code: String, product: HashMap<String, Comparable<*>>): Task<Void>? {
         val addProductTask = user?.let {
             db.collection("users").document(it.uid)
-                .collection("products").document(code.toString()).set(product)
+                .collection("products").document(code).set(product)
         }
 
         return addProductTask
     }
 
+    fun updateProduct(code: String, product: HashMap<String, Comparable<*>>): Task<Void>? {
+        val updateProductTask = user?.let {
+            db.collection("users").document(it.uid)
+                .collection("products").document(code).update(product as Map<String, Any>)
+        }
+
+        return updateProductTask
+    }
+
     fun addEntryTransaction(
-        products: List<Pair<Int, Int>>,
+        products: List<Pair<String, Int>>,
         selectedProducts: List<Product>
     ): Task<Void>? {
 
@@ -218,10 +310,10 @@ class FirebaseRepository {
                         sumPurchasePrice += product.purchasePrice * amount
                         resultPrice += subPrice
 
-                        transactionPath.collection("products").document(code.toString())
+                        transactionPath.collection("products").document(code)
                             .set(getSubTransactionMap(code, amount, subPrice))
 
-                        productsPath.document(code.toString())
+                        productsPath.document(code)
                             .update("amount", FieldValue.increment(-amount.toLong()))
                     }
                 }
@@ -239,7 +331,7 @@ class FirebaseRepository {
     }
 
     fun addExitTransaction(
-        products: List<Pair<Int, Int>>,
+        products: List<Pair<String, Int>>,
         selectedProducts: List<Product>
     ): Task<Void>? {
 
@@ -262,10 +354,10 @@ class FirebaseRepository {
                         val subPrice = product.purchasePrice * amount
                         resultPrice += subPrice
 
-                        transactionPath.collection("products").document(code.toString())
+                        transactionPath.collection("products").document(code)
                             .set(getSubTransactionMap(code, amount, subPrice))
 
-                        productsPath.document(code.toString())
+                        productsPath.document(code)
                             .update("amount", FieldValue.increment(amount.toLong()))
                     }
                 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.squareup.picasso.Picasso
 import com.vitorhilarioapps.mystock.R
 import com.vitorhilarioapps.mystock.databinding.FragmentProductsBinding
@@ -31,7 +32,7 @@ class ProductsFragment : Fragment() {
     private val viewModel : FirestoreViewModel by activityViewModels()
 
     //private val args: ProductsFragmentArgs by navArgs()
-    private val selectedProducts: MutableList<Int> = mutableListOf()
+    private val selectedProducts: MutableList<String> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View {
         _binding = FragmentProductsBinding.inflate(inflater, group, false)
@@ -114,6 +115,10 @@ class ProductsFragment : Fragment() {
             addProducts()
         }
 
+        binding.fabProductsEdit.setOnClickListener {
+            editProduct()
+        }
+
         binding.swipeRefreshProducts.setOnRefreshListener {
             resetSelection()
             getProducts()
@@ -146,9 +151,9 @@ class ProductsFragment : Fragment() {
     |    Handle Selected Products    |
     --------------------------------*/
 
-    private fun hasProduct(code: Int) = selectedProducts.contains(code)
+    private fun hasProduct(code: String) = selectedProducts.contains(code)
 
-    private fun addProduct(code: Int): Boolean {
+    private fun addProduct(code: String): Boolean {
         return if (!hasProduct(code)) {
             selectedProducts.add(code)
             listenDeleteActions()
@@ -156,7 +161,7 @@ class ProductsFragment : Fragment() {
         } else false
     }
 
-    private fun removeProduct(code: Int): Boolean {
+    private fun removeProduct(code: String): Boolean {
         return if (hasProduct(code)) {
             selectedProducts.remove(code)
             listenDeleteActions()
@@ -173,14 +178,28 @@ class ProductsFragment : Fragment() {
     private fun listenDeleteActions() {
         if (selectedProducts.isNotEmpty()) {
             showDeleteActions()
+            if (selectedProducts.size == 1) {
+                showEditAction()
+            } else {
+                hideEditAction()
+            }
         } else {
             hideDeleteActions()
+            hideEditAction()
         }
     }
 
     private fun hideDeleteActions() {
         binding.btnProductsCancel.visibility = View.GONE
         binding.btnProductsDelete.visibility = View.GONE
+    }
+
+    private fun showEditAction() {
+        binding.fabProductsEdit.visibility = View.VISIBLE
+    }
+
+    private fun hideEditAction() {
+        binding.fabProductsEdit.visibility = View.GONE
     }
 
     private fun showDeleteActions() {
@@ -192,9 +211,20 @@ class ProductsFragment : Fragment() {
         }
 
         binding.btnProductsDelete.setOnClickListener {
-            delProducts(selectedProducts)
-            resetSelection()
+            dialogDeleteProducts()
         }
+    }
+
+    private fun dialogDeleteProducts() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.dialog_delete_products_title))
+            .setMessage(getString(R.string.dialog_delete_products_description))
+            .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+            .setPositiveButton(getString(R.string.button_yes)) { _, _ ->
+                delProducts(selectedProducts)
+                resetSelection()
+            }
+            .show()
     }
 
     private fun getResource(id: Int): Drawable? {
@@ -214,7 +244,16 @@ class ProductsFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun delProducts(codes: List<Int>) {
+    private fun editProduct() {
+        if (selectedProducts.size == 1) {
+            val productCode = selectedProducts.first()
+            selectedProducts.clear()
+            val action = ProductsFragmentDirections.actionProductsToEditProducts(productCode)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun delProducts(codes: List<String>) {
         codes.takeIf { it.isNotEmpty() }?.let { products ->
             lifecycleScope.launch {
                 val success = viewModel.delProducts(products)

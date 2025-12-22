@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.auth.userProfileChangeRequest
 import com.squareup.picasso.Picasso
 import com.vitorhilarioapps.mystock.R
 import com.vitorhilarioapps.mystock.databinding.FragmentSignUpBinding
@@ -24,7 +24,6 @@ import com.vitorhilarioapps.mystock.utils.showSuccessToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import www.sanju.motiontoast.MotionToast
 
 class SignUpFragment : Fragment() {
 
@@ -152,7 +151,6 @@ class SignUpFragment : Fragment() {
         requireActivity()
             .showSuccessToast(
                 message = message,
-                duration = MotionToast.SHORT_DURATION
             )
     }
 
@@ -160,7 +158,6 @@ class SignUpFragment : Fragment() {
         requireActivity()
             .showErrorToast(
                 error = error,
-                duration = MotionToast.SHORT_DURATION
             )
     }
 

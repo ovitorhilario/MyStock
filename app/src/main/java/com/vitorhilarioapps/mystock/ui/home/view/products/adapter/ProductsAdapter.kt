@@ -14,9 +14,9 @@ import com.vitorhilarioapps.mystock.utils.moneyType
 
 class ProductsAdapter(
     private val data: List<ProductItem>,
-    private val addProduct: (Int) -> Boolean,
-    private val removeProduct: (Int) -> Boolean,
-    private val hasProduct: (Int) -> Boolean,
+    private val addProduct: (String) -> Boolean,
+    private val removeProduct: (String) -> Boolean,
+    private val hasProduct: (String) -> Boolean,
     private val listSize: () -> Int,
     private val getResource: (Int) -> Drawable?
 ) : Adapter<ProductsAdapter.ProductHolder>() {

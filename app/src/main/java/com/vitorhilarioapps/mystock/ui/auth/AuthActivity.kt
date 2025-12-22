@@ -2,17 +2,20 @@ package com.vitorhilarioapps.mystock.ui.auth
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.vitorhilarioapps.mystock.databinding.ActivityAuthBinding
 
 class AuthActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityAuthBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(binding.root)
     }
+
     override fun onStart() {
         super.onStart()
-        //
     }
 }

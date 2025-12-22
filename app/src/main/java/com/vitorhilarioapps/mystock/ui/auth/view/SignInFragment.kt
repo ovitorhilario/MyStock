@@ -1,37 +1,43 @@
 package com.vitorhilarioapps.mystock.ui.auth.view
 
-import android.content.Intent
-import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.GetCredentialInterruptedException
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
 import com.squareup.picasso.Picasso
 import com.vitorhilarioapps.mystock.R
 import com.vitorhilarioapps.mystock.databinding.FragmentSignInBinding
 import com.vitorhilarioapps.mystock.ui.auth.viewmodel.AuthViewModel
+import com.vitorhilarioapps.mystock.utils.generateNonce
 import com.vitorhilarioapps.mystock.utils.showErrorToast
 import com.vitorhilarioapps.mystock.utils.showSuccessToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import www.sanju.motiontoast.MotionToast
 
 class SignInFragment : Fragment() {
 
@@ -42,11 +48,10 @@ class SignInFragment : Fragment() {
 
     // Firebase
     private lateinit var auth: FirebaseAuth
+    private lateinit var credentialManager: CredentialManager
 
-    // Google SignIn
-    private lateinit var oneTapClient: SignInClient
-    private lateinit var signInRequest: BeginSignInRequest
-    private lateinit var signUpRequest: BeginSignInRequest
+    private lateinit var signInRequestAuto: GetCredentialRequest
+    private lateinit var signInRequestButton: GetCredentialRequest
 
     override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View {
         _binding = FragmentSignInBinding.inflate(LayoutInflater.from(group?.context), group, false)
@@ -56,21 +61,25 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initSignInClient()
         setupUI()
         setupClickListeners()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        auth = Firebase.auth
+        credentialManager = CredentialManager.create(requireContext())
+    }
+
     override fun onStart() {
         super.onStart()
+        val currentUser = auth.currentUser
 
-        try {
-            val user = auth.currentUser
-            if (user != null && user.isEmailVerified) {
-                updateUI()
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error in capture saved user.")
+        if (currentUser != null && currentUser.isEmailVerified) {
+            updateUI()
+        } else {
+            launchCredentialManager()
         }
     }
 
@@ -124,123 +133,117 @@ class SignInFragment : Fragment() {
     |    Google Auth    |
     -------------------*/
 
-    private fun initSignInClient() {
-        try {
-            auth = Firebase.auth
-            oneTapClient = Identity.getSignInClient(requireActivity())
+    private fun launchCredentialManager() {
+        val googleIdOptionAuto = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(true)
+            .setServerClientId(getString(R.string.web_client_id))
+            .setAutoSelectEnabled(true)
+            .setNonce(generateNonce())
+            .build()
 
-            signInRequest = BeginSignInRequest.builder()
-                .setGoogleIdTokenRequestOptions(
-                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                        .setSupported(true)
-                        .setServerClientId(getString(R.string.web_client_id))
-                        .setFilterByAuthorizedAccounts(true)
-                        .build())
-                .build()
+        signInRequestAuto = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOptionAuto)
+            .build()
 
-            signUpRequest = BeginSignInRequest.builder()
-                .setGoogleIdTokenRequestOptions(
-                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                        .setSupported(true)
-                        .setServerClientId(getString(R.string.web_client_id))
-                        // Show all accounts on the device.
-                        .setFilterByAuthorizedAccounts(false)
-                        .build())
-                .build()
-        } catch (e: Exception) {
-            printError(getString(R.string.error_initializing_authentication_text))
+        val signInWithGoogleOption = GetSignInWithGoogleOption.Builder(
+            serverClientId = getString(R.string.web_client_id)
+        ).setNonce(generateNonce())
+            .build()
+
+        signInRequestButton = GetCredentialRequest.Builder()
+            .addCredentialOption(signInWithGoogleOption)
+            .build()
+
+        val disableAutoSignIn = requireActivity().intent.getBooleanExtra("DISABLE_AUTO_SIGN_IN", false)
+        if (!disableAutoSignIn) {
+            checkAutoSignIn()
         }
     }
 
+    fun handleSignInWithGoogleOption(result: GetCredentialResponse) {
+        val credential = result.credential
+
+        when (val customCredential = credential) {
+            is CustomCredential -> {
+                if (customCredential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    try {
+                        val googleIdTokenCredential = GoogleIdTokenCredential
+                            .createFrom(customCredential.data)
+
+                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+                    } catch (e: GoogleIdTokenParsingException) {
+                        Log.e(TAG, "Received an invalid google id token response", e)
+                    }
+                } else {
+                    Log.e(TAG, "Unexpected type of credential")
+                }
+            }
+
+            else -> {
+                Log.e(TAG, "Unexpected type of credential")
+            }
+        }
+    }
+
+    private fun checkAutoSignIn() {
+        lifecycleScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    context = requireContext(),
+                    request = signInRequestAuto
+                )
+                handleSignInWithGoogleOption(result)
+            } catch (e: GetCredentialCancellationException) {
+                Log.w(TAG, "GetCredentialCancellationException", e)
+            } catch (e: NoCredentialException) {
+                Log.e(TAG, "NoCredentialException", e)
+                printError(getString(R.string.error_auth_no_credential))
+            } catch (e: GetCredentialInterruptedException) {
+                Log.e(TAG, "GetCredentialInterruptedException", e)
+                printError(getString(R.string.error_auth_get_credential_interrupted))
+            } catch (e: GetCredentialException) {
+                Log.e(TAG, "Erro no login manual: ${e.message}", e)
+                printError(getString(R.string.error_auth_get_credential))
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+                    if (user != null) {
+                        updateUI()
+                    }
+                } else {
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                }
+            }
+    }
+
     private fun signInGoogle() {
-        oneTapClient.beginSignIn(signInRequest)
-            .addOnSuccessListener(requireActivity()) { result ->
-                try {
-                    startIntentSenderForResult(
-                        result.pendingIntent.intentSender, REQ_ONE_TAP,
-                        null, 0, 0, 0, null)
-                } catch (e: IntentSender.SendIntentException) {
-                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
-                }
-            }
-            .addOnFailureListener(requireActivity()) { e ->
-                // No Sign-Up Google Accounts found.
-                signUpGoogle()
-                Log.d(TAG, e.localizedMessage ?: "")
-            }
-    }
+        lifecycleScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    context = requireContext(),
+                    request = signInRequestButton
+                )
+                handleSignInWithGoogleOption(result)
 
-    private fun signUpGoogle() {
-        oneTapClient.beginSignIn(signUpRequest)
-            .addOnSuccessListener(requireActivity()) { result ->
-                try {
-                    startIntentSenderForResult(
-                        result.pendingIntent.intentSender, REQ_ONE_TAP,
-                        null, 0, 0, 0, null)
-                } catch (e: IntentSender.SendIntentException) {
-                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
-                }
-            }
-            .addOnFailureListener(requireActivity()) { e ->
-                // No Google Accounts found.
-                requireActivity()
-                    .showErrorToast(
-                        error = getString(R.string.no_google_accounts_found_text)
-                    )
-
-                Log.d(TAG, e.localizedMessage)
-            }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            REQ_ONE_TAP -> {
-                try {
-                    val googleCredential = oneTapClient.getSignInCredentialFromIntent(data)
-                    val idToken = googleCredential.googleIdToken
-                    when {
-                        idToken != null -> {
-                            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-                            auth.signInWithCredential(firebaseCredential)
-                                .addOnCompleteListener(requireActivity()) { task ->
-                                    if (task.isSuccessful) {
-                                        val user = auth.currentUser
-                                        if (user != null) {
-                                            updateUI()
-                                        }
-                                    } else {
-                                        printError(getString(R.string.sign_in_fail_text))
-                                        Log.w(TAG, "signInWithCredential:failure", task.exception)
-                                    }
-                                }
-                        }
-                        else -> {
-                            printError(getString(R.string.sign_in_fail_text))
-                            Log.d(TAG, "No ID token!")
-                        }
-                    }
-                } catch (e: ApiException) {
-
-                    when (e.statusCode) {
-                        CommonStatusCodes.CANCELED -> {
-                            Log.d(TAG, "One-tap dialog was closed.")
-                            // Don't re-prompt the user.
-                            showOneTapUI = false
-                        }
-                        CommonStatusCodes.NETWORK_ERROR -> {
-                            Log.d(TAG, "One-tap encountered a network error.")
-                            // Try again or just ignore.
-                            printError(getString(R.string.network_error_text))
-                        }
-                        else -> {
-                            printError(getString(R.string.error_getting_credential_text))
-                            Log.d(TAG, "Couldn't get credential from result." + " (${e.localizedMessage})")
-                        }
-                    }
-                }
+            } catch (e: GetCredentialCancellationException) {
+                Log.w(TAG, "GetCredentialCancellationException", e)
+            } catch (e: NoCredentialException) {
+                Log.e(TAG, "NoCredentialException", e)
+                printError(getString(R.string.error_auth_no_credential))
+            } catch (e: GetCredentialInterruptedException) {
+                Log.e(TAG, "GetCredentialInterruptedException", e)
+                printError(getString(R.string.error_auth_get_credential_interrupted))
+            } catch (e: GetCredentialException) {
+                Log.e(TAG, "Erro no login manual: ${e.message}", e)
+                printError(getString(R.string.error_auth_get_credential))
             }
         }
     }
@@ -305,7 +308,6 @@ class SignInFragment : Fragment() {
         requireActivity()
             .showSuccessToast(
                 message = message,
-                duration = MotionToast.SHORT_DURATION
             )
     }
 
@@ -313,13 +315,10 @@ class SignInFragment : Fragment() {
         requireActivity()
             .showErrorToast(
                 error = error,
-                duration = MotionToast.SHORT_DURATION
             )
     }
 
     companion object {
         const val TAG = "SignInFragment"
-        private const val REQ_ONE_TAP = 2  // Can be any integer unique to the Activity
-        private var showOneTapUI = true
     }
 }

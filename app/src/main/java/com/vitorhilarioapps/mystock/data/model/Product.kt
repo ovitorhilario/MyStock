@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp
 
 data class Product(
     val name: String,
-    val code: Int,
+    val code: String,
     val amount: Int,
     val salePrice: Double,
     val purchasePrice: Double,

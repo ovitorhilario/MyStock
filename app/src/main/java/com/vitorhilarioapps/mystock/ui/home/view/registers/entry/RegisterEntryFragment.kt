@@ -2,6 +2,7 @@ package com.vitorhilarioapps.mystock.ui.home.view.registers.entry
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,7 @@ class RegisterEntryFragment : Fragment() {
 
     private val args by navArgs<RegisterEntryFragmentArgs>()
 
-    private var selectionProductMap: HashMap<Int, Int> = hashMapOf()
+    private var selectionProductMap: HashMap<String, Int> = hashMapOf()
     private var selectedProducts: List<Product> = listOf()
 
     override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View {
@@ -52,7 +53,6 @@ class RegisterEntryFragment : Fragment() {
     fun getProducts() {
         lifecycleScope.launch {
             val products = viewModel.getProducts(args.selectedProducts.toList())
-
             withContext(Dispatchers.Main) {
                 products?.let {
                     setupAdapter(it)
@@ -91,7 +91,7 @@ class RegisterEntryFragment : Fragment() {
                 val currentProductCont = selectionProductMap[code] ?: 0
                 val addedProductCont = currentProductCont + 1
 
-                products.firstOrNull { it.code == code }?.let { product ->
+                products.firstOrNull { it.code.equals(code, ignoreCase = false) }?.let { product ->
                     if (addedProductCont <= product.amount) {
                         selectionProductMap[code] = (currentProductCont + 1)
                     }
@@ -127,7 +127,7 @@ class RegisterEntryFragment : Fragment() {
     |    Firestore    |
     -----------------*/
 
-    private fun registerEntry(products: List<Pair<Int, Int>>) {
+    private fun registerEntry(products: List<Pair<String, Int>>) {
         lifecycleScope.launch {
             val currentProducts = viewModel.getProducts(args.selectedProducts.toList())
 

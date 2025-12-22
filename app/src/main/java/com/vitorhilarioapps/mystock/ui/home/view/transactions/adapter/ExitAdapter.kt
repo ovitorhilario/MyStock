@@ -1,13 +1,10 @@
 package com.vitorhilarioapps.mystock.ui.home.view.transactions.adapter
 
-import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView.Adapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.RecyclerView
 import com.vitorhilarioapps.mystock.R
 import com.vitorhilarioapps.mystock.data.model.Transaction
 import com.vitorhilarioapps.mystock.data.model.TransactionItem
@@ -24,12 +21,10 @@ class ExitAdapter(
     private val hasTransaction: (Int) -> Boolean,
     private val listSize: () -> Int,
     private val getResource: (Int) -> Drawable?
-) : Adapter<ExitAdapter.ExitHolder>() {
+) : RecyclerView.Adapter<ExitAdapter.ExitHolder>() {
 
-    private var expandedPosition = -1;
-    private var previousExpandedPosition = -1;
 
-    inner class ExitHolder(binding: ExitTransactionItemBinding) : ViewHolder(binding.root) {
+    inner class ExitHolder(binding: ExitTransactionItemBinding) : RecyclerView.ViewHolder(binding.root) {
         private val layoutTransactionItem = binding.root
         private val ivExitTransactionIcon = binding.ivExitTransactionIcon
         private val tvExitTransactionInfo = binding.tvExitTransactionInfo
@@ -38,6 +33,62 @@ class ExitAdapter(
         private val btnExitTransactionDropDown = binding.btnExitTransactionDropDown
         private val tvExitTransactionAllInfo = binding.tvExitTransactionAllInfo
         private val containerTransactionExitDropDrown = binding.containerTransactionExitDropDrown
+
+        private var currentTransactionItem: TransactionItem? = null
+
+        init {
+            btnExitTransactionDropDown.setOnClickListener {
+                if (containerTransactionExitDropDrown.visibility == View.VISIBLE) {
+                    containerTransactionExitDropDrown.visibility = View.GONE
+                } else {
+                    containerTransactionExitDropDrown.visibility = View.VISIBLE
+                }
+            }
+
+            layoutTransactionItem.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    currentTransactionItem?.let { transactionItem ->
+                        val transaction = transactionItem.data as Transaction.Exit
+                        if (listSize() >= 1) {
+                            if (hasTransaction(transaction.id)) {
+                                val success = removeTransaction(transaction.id)
+
+                                if (success) {
+                                    setUnselected()
+                                    transactionItem.isSelected = false
+                                }
+                            } else {
+                                val success = addTransaction(transaction.id)
+
+                                if (success) {
+                                    setSelected()
+                                    transactionItem.isSelected = true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            layoutTransactionItem.setOnLongClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    currentTransactionItem?.let { transactionItem ->
+                        val transaction = transactionItem.data as Transaction.Exit
+                        if (listSize() == 0) {
+                            val success = addTransaction(transaction.id)
+
+                            if (success) {
+                                setSelected()
+                                transactionItem.isSelected = true
+                            }
+                        }
+                    }
+                }
+                true
+            }
+        }
 
         private fun setSelected() {
             ivExitTransactionIcon.setImageDrawable(getResource(R.drawable.ic_confirm))
@@ -49,62 +100,16 @@ class ExitAdapter(
             ivExitTransactionIcon.setBackgroundDrawable(getResource(R.drawable.short_cut_red_bg))
         }
 
-        private fun setupClickListeners(transactionItem: TransactionItem, position: Int) {
-            val transaction = transactionItem.data as Transaction.Exit
-
-            btnExitTransactionDropDown.setOnClickListener {
-                val isExpanded = expandedPosition == position
-                expandedPosition = if (isExpanded) -1 else position
-                notifyItemChanged(position)
-                notifyItemChanged(previousExpandedPosition)
-            }
-
-            layoutTransactionItem.setOnClickListener {
-                if (listSize() >= 1) {
-                    if (hasTransaction(transaction.id)) {
-                        val success = removeTransaction(transaction.id)
-
-                        if (success) {
-                            setUnselected()
-                            transactionItem.isSelected = false
-                        }
-                    } else {
-                        val success = addTransaction(transaction.id)
-
-                        if (success) {
-                            setSelected()
-                            transactionItem.isSelected = true
-                        }
-                    }
-                }
-            }
-
-            layoutTransactionItem.setOnLongClickListener {
-                if (listSize() == 0) {
-                    val success = addTransaction(transaction.id)
-
-                    if (success) {
-                        setSelected()
-                        transactionItem.isSelected = true
-                    }
-                }
-
-                true
-            }
-        }
-
-        private fun dropDownEnable() {
-            containerTransactionExitDropDrown.visibility = View.VISIBLE
-        }
-
-        private fun dropDownDisable() {
-            containerTransactionExitDropDrown.visibility = View.GONE
-        }
-
         fun bindExit(transactionItem: TransactionItem, position: Int) {
+            currentTransactionItem = transactionItem
             val exit = transactionItem.data as Transaction.Exit
-            val isExpanded = expandedPosition == position
-            setupClickListeners(transactionItem, position)
+
+            if (hasTransaction(exit.id)) {
+                setSelected()
+            } else {
+                setUnselected()
+            }
+
             tvExitTransactionInfo.text = exit.info.joinToString()
             tvExitTransactionAllInfo.text = exit.info.joinToString(separator = "\n")
             tvExitTransactionDate.text = buildString {
@@ -113,14 +118,10 @@ class ExitAdapter(
                 ); append(" | "); append(exit.date.toDate().getDay_())
             }
             tvExitTransactionValue.text =
-                buildString { append("+"); append(exit.resultPrice.moneyType()) }
+                buildString { append("-"); append(exit.resultPrice.moneyType()) }
 
-            if (isExpanded) {
-                previousExpandedPosition = position
-                dropDownEnable()
-            } else {
-                dropDownDisable()
-            }
+            // Reset dropdown state on bind
+            containerTransactionExitDropDrown.visibility = View.GONE
         }
     }
 
@@ -131,7 +132,7 @@ class ExitAdapter(
     }
 
     override fun onBindViewHolder(holder: ExitHolder, position: Int) {
-          holder.bindExit(data[position], position)
+        holder.bindExit(data[position], position)
     }
 
     override fun getItemCount(): Int = data.size

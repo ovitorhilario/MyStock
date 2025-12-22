@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initPeriod() {
-        currentPeriod.value = Period.AllHistory
+        currentPeriod.value = Period.Last24Hours
     }
 
     /*-------------------------

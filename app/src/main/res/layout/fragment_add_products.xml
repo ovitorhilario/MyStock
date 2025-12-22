@@ -42,11 +42,10 @@
             style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/gap_normal"
+            android:layout_marginHorizontal="@dimen/gap_normal"
             android:layout_marginTop="@dimen/gap_normal"
-            android:layout_marginEnd="@dimen/gap_small"
             app:boxStrokeWidth="0dp"
-            app:layout_constraintEnd_toStartOf="@id/guide_line_mid_of_mid"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_add_product_label_info"
             app:startIconDrawable="@drawable/ic_barcode"
@@ -58,7 +57,7 @@
                 android:layout_height="@dimen/input_height"
                 android:background="@drawable/input_bg"
                 android:hint="@string/code_hint"
-                android:inputType="number"
+                android:inputType="text"
                 android:maxLength="320"
                 android:maxLines="1"
                 android:textColor="@color/black"
@@ -67,21 +66,33 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tv_error_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_small"
+            android:layout_marginHorizontal="@dimen/gap_small"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/layout_add_product_code"
+            app:layout_constraintStart_toStartOf="@id/layout_add_product_code"
+            app:layout_constraintTop_toBottomOf="@id/layout_add_product_code"
+            tools:text="Error message" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btn_add_products_scan_barcode"
             android:layout_width="0dp"
             android:layout_height="@dimen/input_height"
-            android:layout_marginStart="@dimen/gap_small"
-            android:layout_marginEnd="@dimen/gap_normal"
+            android:layout_marginHorizontal="@dimen/gap_normal"
+            android:layout_marginTop="@dimen/gap_normal"
             android:background="@drawable/input_bg"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             app:cardBackgroundColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/layout_add_product_code"
+            app:layout_constraintTop_toBottomOf="@id/tv_error_code"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/guide_line_mid_of_mid"
-            app:layout_constraintTop_toTopOf="@id/layout_add_product_code"
+            app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/black"
             app:strokeWidth="2dp">
 
@@ -104,7 +115,7 @@
             app:boxStrokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_add_product_code"
+            app:layout_constraintTop_toBottomOf="@id/btn_add_products_scan_barcode"
             app:startIconDrawable="@drawable/ic_pencil"
             app:startIconTint="@color/black">
 
@@ -123,6 +134,19 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tv_error_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_small"
+            android:layout_marginHorizontal="@dimen/gap_small"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/layout_add_product_name"
+            app:layout_constraintStart_toStartOf="@id/layout_add_product_name"
+            app:layout_constraintTop_toBottomOf="@id/layout_add_product_name"
+            tools:text="Error message" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_add_product_amount"
             style="@style/Widget.Material3.TextInputLayout.FilledBox"
@@ -133,7 +157,7 @@
             app:boxStrokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_add_product_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_error_name"
             app:startIconDrawable="@drawable/ic_add"
             app:startIconTint="@color/black">
 
@@ -153,6 +177,115 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:id="@+id/tv_error_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_small"
+            android:layout_marginHorizontal="@dimen/gap_small"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/layout_add_product_amount"
+            app:layout_constraintStart_toStartOf="@id/layout_add_product_amount"
+            app:layout_constraintTop_toBottomOf="@id/layout_add_product_amount"
+            tools:text="Error message" />
+
+        <TextView
+            android:id="@+id/tv_add_product_label_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/gap_normal"
+            android:layout_marginTop="@dimen/gap_normal"
+            android:gravity="start"
+            android:text="@string/purchase_and_sale_price_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_error_amount" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_add_product_purchase_price"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/gap_normal"
+            android:layout_marginTop="@dimen/gap_normal"
+            app:boxStrokeWidth="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_add_product_label_price"
+            app:startIconDrawable="@drawable/ic_purchase"
+            app:startIconTint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_add_product_purchase_price"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/input_height"
+                android:background="@drawable/input_bg"
+                android:hint="@string/purchase_price_hint"
+                android:inputType="numberDecimal"
+                android:maxLength="320"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/font_size_normal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_error_purchase_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_small"
+            android:layout_marginHorizontal="@dimen/gap_small"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/layout_add_product_purchase_price"
+            app:layout_constraintStart_toStartOf="@id/layout_add_product_purchase_price"
+            app:layout_constraintTop_toBottomOf="@id/layout_add_product_purchase_price"
+            tools:text="Error message" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_add_product_sale_price"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/gap_normal"
+            android:layout_marginTop="@dimen/gap_normal"
+            app:boxStrokeWidth="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_error_purchase_price"
+            app:startIconDrawable="@drawable/ic_sale_price"
+            app:startIconTint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_add_product_sale_price"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/input_height"
+                android:background="@drawable/input_bg"
+                android:hint="@string/sale_price_hint"
+                android:inputType="numberDecimal"
+                android:maxLength="320"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/font_size_normal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_error_sale_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_small"
+            android:layout_marginHorizontal="@dimen/gap_small"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/layout_add_product_sale_price"
+            app:layout_constraintStart_toStartOf="@id/layout_add_product_sale_price"
+            app:layout_constraintTop_toBottomOf="@id/layout_add_product_sale_price"
+            tools:text="Error message" />
+
+        <TextView
             android:id="@+id/tv_add_product_label_add"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -162,7 +295,7 @@
             android:text="@string/add_info_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_add_product_sale_price" />
+            app:layout_constraintTop_toBottomOf="@id/tv_error_sale_price" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_add_product_description"
@@ -276,76 +409,6 @@
                 android:inputType="text"
                 android:textSize="@dimen/font_size_normal"
                 tools:ignore="LabelFor" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/tv_add_product_label_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/gap_normal"
-            android:layout_marginTop="@dimen/gap_normal"
-            android:gravity="start"
-            android:text="@string/purchase_and_sale_price_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_add_product_amount" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_add_product_purchase_price"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/gap_normal"
-            android:layout_marginTop="@dimen/gap_normal"
-            app:boxStrokeWidth="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_add_product_label_price"
-            app:startIconDrawable="@drawable/ic_purchase"
-            app:startIconTint="@color/black">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_add_product_purchase_price"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/input_height"
-                android:background="@drawable/input_bg"
-                android:hint="@string/purchase_price_hint"
-                android:inputType="numberDecimal"
-                android:maxLength="320"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="@dimen/font_size_normal" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_add_product_sale_price"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/gap_normal"
-            android:layout_marginTop="@dimen/gap_normal"
-            app:boxStrokeWidth="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_add_product_purchase_price"
-            app:startIconDrawable="@drawable/ic_sale_price"
-            app:startIconTint="@color/black">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_add_product_sale_price"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/input_height"
-                android:background="@drawable/input_bg"
-                android:hint="@string/sale_price_hint"
-                android:inputType="numberDecimal"
-                android:maxLength="320"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="@dimen/font_size_normal" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

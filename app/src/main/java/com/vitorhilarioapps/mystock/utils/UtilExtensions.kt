@@ -1,13 +1,10 @@
 package com.vitorhilarioapps.mystock.utils
 
 import android.app.Activity
-import androidx.core.content.res.ResourcesCompat
+import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.vitorhilarioapps.mystock.R
 import kotlinx.coroutines.tasks.await
-import www.sanju.motiontoast.MotionToast
-import www.sanju.motiontoast.MotionToastStyle
 
 /*-----------------------------
 |    Coroutines & Firebase    |
@@ -52,32 +49,14 @@ fun Double.moneyType() : String {
     }
 }
 
-fun Activity.showInfoToast(tittle: String = "Info", info: String, duration: Long = MotionToast.LONG_DURATION) {
-    MotionToast.darkColorToast(this,
-        tittle,
-        info,
-        MotionToastStyle.INFO,
-        MotionToast.GRAVITY_BOTTOM,
-        duration,
-        ResourcesCompat.getFont(this, R.font.dmsans))
+fun Activity.showInfoToast(info: String) {
+    Toast.makeText(this, info, Toast.LENGTH_SHORT).show()
 }
 
-fun Activity.showSuccessToast(tittle: String = "Success", message: String, duration: Long = MotionToast.LONG_DURATION) {
-    MotionToast.darkColorToast(this,
-        tittle,
-        message,
-        MotionToastStyle.SUCCESS,
-        MotionToast.GRAVITY_BOTTOM,
-        duration,
-        ResourcesCompat.getFont(this, R.font.dmsans))
+fun Activity.showSuccessToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
-fun Activity.showErrorToast(tittle: String = "Error", error: String, duration: Long = MotionToast.LONG_DURATION) {
-    MotionToast.darkColorToast(this,
-        tittle,
-        error,
-        MotionToastStyle.ERROR,
-        MotionToast.GRAVITY_BOTTOM,
-        duration,
-        ResourcesCompat.getFont(this, R.font.dmsans))
+fun Activity.showErrorToast(error: String) {
+    Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
 }

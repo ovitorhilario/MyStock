@@ -1,6 +1,5 @@
 package com.vitorhilarioapps.mystock.ui.home.view.registers.entry.adapter
 
-import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import com.vitorhilarioapps.mystock.utils.moneyType
 
 class EntryAdapter (
     private val data: List<Product>,
-    private val addProductCont: (Int) -> Int,
-    private val removeProductCont: (Int) -> Int,
+    private val addProductCont: (String) -> Int,
+    private val removeProductCont: (String) -> Int,
     private val getResource: (Int) -> Drawable?
 ) : Adapter<EntryAdapter.SingleHolder>() {
 

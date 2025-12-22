@@ -2,11 +2,11 @@ package com.vitorhilarioapps.mystock.ui.home.view.transactions
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
@@ -90,7 +90,6 @@ class NestedTransactionFragment : Fragment() {
 
     private fun setupAdapter(transactions: List<Transaction>) {
         binding.swipeRefreshTransaction.isRefreshing = false
-
         val adapter = when (currentState.value as TransactionType) {
             is TransactionType.Sale -> EntryAdapter(
                 data = transactions.map { TransactionItem(it, false) },
@@ -98,7 +97,7 @@ class NestedTransactionFragment : Fragment() {
                     val success = selectedEntrys.add(it)
                     listenSelectChanges()
                     success
-                 },
+                },
                 removeTransaction = {
                     val success = selectedEntrys.remove(it)
                     listenSelectChanges()
@@ -114,7 +113,7 @@ class NestedTransactionFragment : Fragment() {
                     val success = selectedExits.add(it)
                     listenSelectChanges()
                     success
-                 },
+                },
                 removeTransaction = {
                     val success = selectedExits.remove(it)
                     listenSelectChanges()

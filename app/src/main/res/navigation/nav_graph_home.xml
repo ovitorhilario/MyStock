@@ -67,6 +67,12 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
 
+        <action
+            android:id="@+id/action_products_to_edit_products"
+            app:destination="@id/fragment_edit_products"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
         <argument
             android:name="open_add_products"
             android:defaultValue="false"
@@ -85,6 +91,16 @@
         android:name="com.vitorhilarioapps.mystock.ui.home.view.addproducts.AddProductsFragment"
         android:label="@string/add_products"
         tools:layout="@layout/fragment_add_products" />
+
+    <fragment
+        android:id="@+id/fragment_edit_products"
+        android:name="com.vitorhilarioapps.mystock.ui.home.view.editproducts.EditProductsFragment"
+        android:label="@string/edit_product"
+        tools:layout="@layout/fragment_edit_products">
+        <argument
+            android:name="productCode"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_select_products"
@@ -124,7 +140,7 @@
 
         <argument
             android:name="selectedProducts"
-            app:argType="integer[]" />
+            app:argType="string[]" />
         <action
             android:id="@+id/action_register_entry_to_transactions"
             app:destination="@id/fragment_transactions"
@@ -142,7 +158,7 @@
 
         <argument
             android:name="selectedProducts"
-            app:argType="integer[]" />
+            app:argType="string[]" />
         <action
             android:id="@+id/action_register_exit_to_transactions"
             app:destination="@id/fragment_transactions"

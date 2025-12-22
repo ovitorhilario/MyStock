@@ -90,7 +90,7 @@ class HomeAdapter(
                     chipInfoLastMonth.id -> Period.LastMonth
                     chipInfoLastWeek.id -> Period.LastWeek
                     chipInfoLastDay.id -> Period.Last24Hours
-                    else -> Period.AllHistory
+                    else -> Period.Last24Hours
                 }
 
                 setOnOrderPeriod(period)

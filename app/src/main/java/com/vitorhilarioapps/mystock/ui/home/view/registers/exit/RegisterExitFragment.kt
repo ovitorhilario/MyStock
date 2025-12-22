@@ -30,7 +30,7 @@ class RegisterExitFragment : Fragment() {
 
     private val args by navArgs<RegisterExitFragmentArgs>()
 
-    private var selectionProductMap: HashMap<Int, Int> = hashMapOf()
+    private var selectionProductMap: HashMap<String, Int> = hashMapOf()
     private var selectedProducts: List<Product> = listOf()
 
     override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View {
@@ -101,7 +101,7 @@ class RegisterExitFragment : Fragment() {
                 val currentProductCont = selectionProductMap[code] ?: 0
                 val removedProductCont = currentProductCont - 1
 
-                products.firstOrNull { it.code == code }?.let { product ->
+                products.firstOrNull { it.code.equals(code, ignoreCase = false) }?.let { product ->
                     if (removedProductCont >= 0) {
                         selectionProductMap[code] = (currentProductCont - 1)
                     }
@@ -125,7 +125,7 @@ class RegisterExitFragment : Fragment() {
     |    Firestore    |
     -----------------*/
 
-    private fun registerExit(products: List<Pair<Int, Int>>) {
+    private fun registerExit(products: List<Pair<String, Int>>) {
         lifecycleScope.launch {
             val currentProducts = viewModel.getProducts(args.selectedProducts.toList())
 

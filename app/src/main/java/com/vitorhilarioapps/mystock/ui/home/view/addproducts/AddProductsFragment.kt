@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -64,30 +63,28 @@ class AddProductsFragment : Fragment() {
         }
 
         binding.btnAddProducts.setOnClickListener {
-            with(binding) {
-                // Required
-                val code = inputAddProductCode.text.intOrNull()
-                val name = inputAddProductName.text.strOrNull()
-                val purchasePrice = inputAddProductPurchasePrice.text.doubleOrNull()
-                val salePrice = inputAddProductSalePrice.text.doubleOrNull()
-                val amount = inputAddProductAmount.text.intOrNull()
+            if (validateInputs()) {
+                with(binding) {
 
-                // Additional - can be null
-                val description = inputAddProductDescription.text.strOrNull()
-                val weight = inputAddProductWeight.text.doubleOrNull()
-                val category = autoCompleteCategory.text.strOrNull()
-                val weightType = autoCompleteWeight.text.strOrNull()
+                    val code = inputAddProductCode.text.strOrNull() ?: ""
+                    val name = inputAddProductName.text.strOrNull() ?: ""
+                    val purchasePrice = inputAddProductPurchasePrice.text.doubleOrNull() ?: 0.0
+                    val salePrice = inputAddProductSalePrice.text.doubleOrNull() ?: 0.0
+                    val amount = inputAddProductAmount.text.intOrNull() ?: 0
 
-                val required = listOf(code, name, purchasePrice, salePrice, amount)
+                    // Additional - can be null
+                    val description = inputAddProductDescription.text.strOrNull()
+                    val weight = inputAddProductWeight.text.doubleOrNull()
+                    val category = autoCompleteCategory.text.strOrNull()
+                    val weightType = autoCompleteWeight.text.strOrNull()
 
-                if (required.all { it != null }) {
                     try {
                         val productMap = getProductMap(
-                            code = code!!,
-                            name = name!!,
-                            amount = amount!!,
-                            purchasePrice = purchasePrice!!,
-                            salePrice = salePrice!!,
+                            code = code,
+                            name = name,
+                            amount = amount,
+                            purchasePrice = purchasePrice,
+                            salePrice = salePrice,
                             description = description ?: "",
                             category = category ?: "",
                             weight = weight ?: 0.0,
@@ -101,23 +98,82 @@ class AddProductsFragment : Fragment() {
                                 error = getString(R.string.error_registering_product_text)
                             )
                     }
-                } else {
-                    requireActivity()
-                        .showErrorToast(
-                            error = getString(R.string.fill_in_all_required_information_text)
-                        )
-             }
-
+                }
             }
         }
+    }
+
+    private fun validateInputs(): Boolean {
+        var isValid = true
+        with(binding) {
+
+            // Valida Code
+            if (inputAddProductCode.text.isNullOrBlank()) {
+                tvErrorCode.text = getString(R.string.error_product_code_required)
+                tvErrorCode.visibility = View.VISIBLE
+                inputAddProductCode.requestFocus()
+                isValid = false
+            } else if (!inputAddProductCode.text.toString().trim().isAlphanumeric()) {
+                tvErrorCode.text = getString(R.string.error_product_code_alphanumeric)
+                tvErrorCode.visibility = View.VISIBLE
+                inputAddProductCode.requestFocus()
+                isValid = false
+            } else {
+                tvErrorCode.visibility = View.GONE
+            }
+
+            // Valida Name
+            if (inputAddProductName.text.isNullOrBlank()) {
+                tvErrorName.text = getString(R.string.error_product_name_required)
+                tvErrorName.visibility = View.VISIBLE
+                if (isValid) inputAddProductName.requestFocus() // Foca apenas se for o primeiro erro
+                isValid = false
+            } else {
+                tvErrorName.visibility = View.GONE
+            }
+
+            // Valida Purchase Price (Verifica conversão numérica)
+            if (inputAddProductPurchasePrice.text.doubleOrNull() == null) {
+                tvErrorPurchasePrice.text = getString(R.string.error_product_purchase_price_required)
+                tvErrorPurchasePrice.visibility = View.VISIBLE
+                if (isValid) inputAddProductPurchasePrice.requestFocus()
+                isValid = false
+            } else {
+                tvErrorPurchasePrice.visibility = View.GONE
+            }
+
+            // Valida Sale Price (Verifica conversão numérica)
+            if (inputAddProductSalePrice.text.doubleOrNull() == null) {
+                tvErrorSalePrice.text = getString(R.string.error_product_sale_price_required)
+                tvErrorSalePrice.visibility = View.VISIBLE
+                if (isValid) inputAddProductSalePrice.requestFocus()
+                isValid = false
+            } else {
+                tvErrorSalePrice.visibility = View.GONE
+            }
+
+            // Valida Amount (Verifica conversão para Inteiro)
+            if (inputAddProductAmount.text.intOrNull() == null) {
+                tvErrorAmount.text = getString(R.string.error_product_amount_required)
+                tvErrorAmount.visibility = View.VISIBLE
+                if (isValid) inputAddProductAmount.requestFocus()
+                isValid = false
+            } else {
+                tvErrorAmount.visibility = View.GONE
+            }
+        }
+        return isValid
     }
 
     /*-----------------
     |    Firestore    |
     -----------------*/
 
-    private fun addProduct(code: Int, product: HashMap<String, Comparable<*>>) {
+    private fun addProduct(code: String, product: HashMap<String, Comparable<*>>) {
         lifecycleScope.launch {
+            // Evita processar se o código for vazio (dupla checagem)
+            if (code.isBlank()) return@launch
+
             val hasProduct = viewModel.hasProduct(code)
 
             withContext(Dispatchers.Main) {
@@ -129,9 +185,15 @@ class AddProductsFragment : Fragment() {
                             .showSuccessToast(
                                 message = resources.getString(R.string.product_added)
                             )
+                        // Só navega se deu certo
+                        findNavController().navigateUp()
+                    } else {
+                        // Caso a operação no Firestore falhe
+                        requireActivity()
+                            .showErrorToast(
+                                error = resources.getString(R.string.error_registering_product_text)
+                            )
                     }
-
-                    findNavController().navigateUp()
                 } else {
                     requireActivity()
                         .showErrorToast(
@@ -148,21 +210,9 @@ class AddProductsFragment : Fragment() {
         scanner.startScan()
             .addOnSuccessListener { barcode ->
                 val rawValue = barcode.rawValue
-
-                rawValue?.takeIf { it.isDigitsOnly() }?.let {
-                    val number = rawValue.toLongOrNull()
-                    number?.let {
-                        binding.inputAddProductCode.setText(it.toString())
-                    } ?: run {
-                        requireActivity()
-                            .showErrorToast(
-                                error = getString(R.string.the_barcode_can_only_contain_numbers_text)
-                            )
-                    }
-                }
+                binding.inputAddProductCode.setText(rawValue)
             }
             .addOnFailureListener { e ->
-
                 requireActivity()
                     .showErrorToast(
                         error = buildString { append(resources.getString(R.string.error), e.message.toString()) }
@@ -170,6 +220,7 @@ class AddProductsFragment : Fragment() {
             }
     }
 
+    // Helper functions
     private fun Editable?.strOrNull(): String? {
         val text = this.toString().trim()
         return text.ifEmpty { null }
@@ -180,6 +231,15 @@ class AddProductsFragment : Fragment() {
     }
 
     private fun Editable?.doubleOrNull(): Double? {
-        return this.toString().trim().toDoubleOrNull()
+        return this.toString().replace(",", ".").trim().toDoubleOrNull()
+    }
+
+    private fun String.isAlphanumeric(): Boolean {
+        return this.matches(Regex("^[a-zA-Z0-9]+$"))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

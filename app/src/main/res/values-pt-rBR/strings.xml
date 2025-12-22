@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MyStock</string>
-    <string name="forgot_password">" Esqueceu sua senha?"</string>
+    <string name="forgot_password">Esqueceu sua senha?</string>
     <string name="password_hint">Senha</string>
     <string name="btn_sign_in">Entrar</string>
     <string name="btn_sign_up">Cadastrar-se</string>
@@ -55,10 +55,10 @@
     <string name="image_loading_landing_page_desc">Imagem de carregamento da pagina inicial</string>
     <string name="image_button_logout_desc">Image de botão para sair da conta</string>
     <string name="chip_all">Tudo</string>
-    <string name="chip_last_month">Este Mês</string>
-    <string name="chip_last_week">Esta Semana</string>
+    <string name="chip_last_month">Mês</string>
+    <string name="chip_last_week">Semana</string>
     <string name="chip_today">Hoje</string>
-    <string name="transactions_balance_text">Resultado das Transaçõe</string>
+    <string name="transactions_balance_text">Resultado das Transações</string>
     <string name="profit_on_sales_text">Lucro sobre Vendas</string>
     <string name="main_activities_text">Atividades Principais</string>
     <string name="add_product_text">Novo Produto</string>
@@ -98,8 +98,8 @@
     <string name="error_to_add_product">Erro ao adicionar!</string>
     <string name="value_in_stock">Valor em Estoque</string>
     <string name="all_products">Todos os Produtos</string>
-    <string name="entry">Entradas</string>
-    <string name="exit">Saídas</string>
+    <string name="entry">Vendas</string>
+    <string name="exit">Compras</string>
     <string name="success_in_delete">Os produtos foram deletados!</string>
     <string name="registered_products">Produtos Registrados</string>
     <string name="success_in_add_transaction">Transação adicionada!</string>
@@ -108,8 +108,8 @@
     <string name="sales">Vendas</string>
     <string name="purchases">Compras</string>
     <string name="dont_have_products">Você não possui produtos ainda!</string>
-    <string name="register_exit">Registrar Saída</string>
-    <string name="register_entry">Registrar Entrada</string>
+    <string name="register_exit">Registrar Compra</string>
+    <string name="register_entry">Registrar Venda</string>
     <string name="select_products">Selecione os Produtos</string>
     <string name="add_products">Adicionar Produtos</string>
     <string name="notifications">Notificações</string>
@@ -147,7 +147,7 @@
     <string name="success_in_delete_transaction_text">Sucesso ao deletar as transações!</string>
     <string name="error_deleting_transaction_text">Erro ao deletar as transações!</string>
     <string name="error_deleting_products_text">Erro ao deletar os produtos!</string>
-    <string name="no_google_accounts_found_text">" Nenhuma Conta do Google encontrada."</string>
+    <string name="no_google_accounts_found_text">Nenhuma Conta do Google encontrada.</string>
     <string name="sign_in_fail_text">Error ao tentar Logar</string>
     <string name="network_error_text">Erro de Internet</string>
     <string name="error_getting_credential_text">Erro com a credencial do Google</string>
@@ -162,5 +162,18 @@
     <string name="rate">Avaliar</string>
     <string name="the_barcode_can_only_contain_numbers_text">O código de barras só pode contér números!</string>
     <string name="error">Erro</string>
+    <string name="btn_delete_account">Excluir Conta</string>
+    <string name="error_product_code_required">Código é obrigatório</string>
+    <string name="error_product_code_alphanumeric">Código deve conter apenas letras e números</string>
+    <string name="error_product_name_required">Nome é obrigatório</string>
+    <string name="error_product_purchase_price_required">Preço de compra é obrigatório</string>
+    <string name="error_product_sale_price_required">Preço de venda é obrigatório</string>
+    <string name="error_product_amount_required">Quantidade é obrigatório</string>
+    <string name="btn_fab_edit_product">Editar Produto</string>
+    <string name="edit_product_btn">Editar Produto</string>
+    <string name="product_updated">Produto atualizado</string>
+    <string name="error_updating_product_text">Erro ao atualizar produto</string>
+    <string name="error_loading_product">Erro ao carregar produto</string>
+    <string name="edit_product">Editar Produto</string>
 
 </resources>

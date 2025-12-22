@@ -59,8 +59,8 @@
     <string name="image_loading_landing_page_desc">Image loading landing page</string>
     <string name="image_button_logout_desc">Image button logout</string>
     <string name="chip_all">All</string>
-    <string name="chip_last_month">Last Month</string>
-    <string name="chip_last_week">Last Week</string>
+    <string name="chip_last_month">Month</string>
+    <string name="chip_last_week">Week</string>
     <string name="chip_today">Today</string>
     <string name="transactions_balance_text">Transactions Balance</string>
     <string name="fake_money" translatable="false">R$ 540,54</string>
@@ -155,6 +155,35 @@
     <string name="rate">Rate</string>
     <string name="the_barcode_can_only_contain_numbers_text">The barcode can only contain numbers!</string>
     <string name="error">Error</string>
+    <string name="btn_delete_account">Delete Account</string>
+    <string name="error_product_code_required">Code is required</string>
+    <string name="error_product_code_alphanumeric">Code must contain only letters and numbers</string>
+    <string name="error_product_name_required">Name is required</string>
+    <string name="error_product_purchase_price_required">Purchase price is required</string>
+    <string name="error_product_sale_price_required">Sale price is required</string>
+    <string name="error_product_amount_required">Product amount is required</string>
+    <string name="btn_fab_edit_product">Edit Product</string>
+    <string name="edit_product_btn">Edit Product</string>
+    <string name="product_updated">Product Updated</string>
+    <string name="error_updating_product_text">Error updating product</string>
+    <string name="error_loading_product">Error loading product</string>
+    <string name="edit_product">Edit Product</string>
+    <string name="error_auth_no_credential">Nenhuma credencial encontrada.</string>
+    <string name="error_auth_get_credential_interrupted">O processo de login foi interrompido.</string>
+    <string name="error_auth_get_credential">Falha ao abrir Google Sign-in</string>
+    <string name="dialog_delete_products_title">Deletar produtos</string>
+    <string name="dialog_delete_products_description">Tem certeza que deseja deletar os items selecionados?</string>
+    <string name="button_yes">Sim</string>
+    <string name="dialog_delete_account_title">Exclusão de Conta</string>
+    <string name="dialog_delete_account_description">Essa ação NÃO pode ser desfeita. Você deve realizer login novamente para confirmar a exclusão.</string>
+    <string name="btn_confirm">Confirmar</string>
+    <string name="hint_current_password">Senha atual</string>
+    <string name="dialog_confirm_account_title">Confirmação de Segurança</string>
+    <string name="dialog_confirm_account_description">Para sua segurança, confirme sua senha antes de excluir a conta.</string>
+    <string name="btn_delete">Excluir</string>
+    <string name="error_password_is_required">A senha é obrigatória</string>
+    <string name="success_delete_account">Conta excluída permanentemente.</string>
+    <string name="error_delete_account">Falha ao excluir conta. Tente novamente.</string>
 
     <string-array name="category_list">
         <item></item>

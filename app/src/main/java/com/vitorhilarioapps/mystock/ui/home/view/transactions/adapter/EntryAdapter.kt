@@ -1,10 +1,10 @@
 package com.vitorhilarioapps.mystock.ui.home.view.transactions.adapter
 
-import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.vitorhilarioapps.mystock.R
@@ -15,6 +15,7 @@ import com.vitorhilarioapps.mystock.utils.moneyType
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.core.view.isVisible
 
 class EntryAdapter(
     private val data: List<TransactionItem>,
@@ -24,9 +25,6 @@ class EntryAdapter(
     private val listSize: () -> Int,
     private val getResource: (Int) -> Drawable?
 ) : Adapter<EntryAdapter.EntryHolder>() {
-
-    private var expandedPosition = -1;
-    private var previousExpandedPosition = -1;
 
     inner class EntryHolder(binding: EntryTransactionItemBinding) : ViewHolder(binding.root) {
         private val layoutTransactionItem = binding.root
@@ -38,6 +36,62 @@ class EntryAdapter(
         private val tvEntryTransactionAllInfo = binding.tvEntryTransactionAllInfo
         private val containerTransactionEntryDropDrown = binding.containerTransactionEntryDropDrown
 
+        private var currentTransactionItem: TransactionItem? = null
+
+        init {
+            btnEntryTransactionDropDown.setOnClickListener {
+                if (containerTransactionEntryDropDrown.isVisible) {
+                    containerTransactionEntryDropDrown.visibility = View.GONE
+                } else {
+                    containerTransactionEntryDropDrown.visibility = View.VISIBLE
+                }
+            }
+
+            layoutTransactionItem.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    currentTransactionItem?.let { transactionItem ->
+                        val transaction = transactionItem.data as Transaction.Entry
+                        if (listSize() >= 1) {
+                            if (hasTransaction(transaction.id)) {
+                                val success = removeTransaction(transaction.id)
+
+                                if (success) {
+                                    setUnselected()
+                                    transactionItem.isSelected = false
+                                }
+                            } else {
+                                val success = addTransaction(transaction.id)
+
+                                if (success) {
+                                    setSelected()
+                                    transactionItem.isSelected = true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            layoutTransactionItem.setOnLongClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    currentTransactionItem?.let { transactionItem ->
+                        val transaction = transactionItem.data as Transaction.Entry
+                        if (listSize() == 0) {
+                            val success = addTransaction(transaction.id)
+
+                            if (success) {
+                                setSelected()
+                                transactionItem.isSelected = true
+                            }
+                        }
+                    }
+                }
+                true
+            }
+        }
+
         private fun setSelected() {
             ivEntryTransactionIcon.setImageDrawable(getResource(R.drawable.ic_confirm))
             ivEntryTransactionIcon.setBackgroundDrawable(getResource(R.drawable.short_cut_green_bg))
@@ -48,62 +102,17 @@ class EntryAdapter(
             ivEntryTransactionIcon.setBackgroundDrawable(getResource(R.drawable.short_cut_blue_bg))
         }
 
-        private fun setupClickListeners(transactionItem: TransactionItem, position: Int) {
-            val transaction = transactionItem.data as Transaction.Entry
-
-            btnEntryTransactionDropDown.setOnClickListener {
-                val isExpanded = expandedPosition == position
-                expandedPosition = if (isExpanded) -1 else position
-                notifyItemChanged(position)
-                notifyItemChanged(previousExpandedPosition)
-            }
-
-            layoutTransactionItem.setOnClickListener {
-                if (listSize() >= 1) {
-                    if (hasTransaction(transaction.id)) {
-                        val success = removeTransaction(transaction.id)
-
-                        if (success) {
-                            setUnselected()
-                            transactionItem.isSelected = false
-                        }
-                    } else {
-                        val success = addTransaction(transaction.id)
-
-                        if (success) {
-                            setSelected()
-                            transactionItem.isSelected = true
-                        }
-                    }
-                }
-            }
-
-            layoutTransactionItem.setOnLongClickListener {
-                if (listSize() == 0) {
-                    val success = addTransaction(transaction.id)
-
-                    if (success) {
-                        setSelected()
-                        transactionItem.isSelected = true
-                    }
-                }
-
-                true
-            }
-        }
-
-        private fun dropDownEnable() {
-            containerTransactionEntryDropDrown.visibility = View.VISIBLE
-        }
-
-        private fun dropDownDisable() {
-            containerTransactionEntryDropDrown.visibility = View.GONE
-        }
 
         fun bindEntry(transactionItem: TransactionItem, position: Int) {
+            currentTransactionItem = transactionItem
             val entry = transactionItem.data as Transaction.Entry
-            val isExpanded = expandedPosition == position
-            setupClickListeners(transactionItem, position)
+
+            if (hasTransaction(entry.id)) {
+                setSelected()
+            } else {
+                setUnselected()
+            }
+
             tvEntryTransactionInfo.text = entry.info.joinToString()
             tvEntryTransactionAllInfo.text = entry.info.joinToString(separator = "\n")
             tvEntryTransactionDate.text = buildString {
@@ -114,12 +123,8 @@ class EntryAdapter(
             tvEntryTransactionValue.text =
                 buildString { append("+"); append(entry.resultPrice.moneyType()) }
 
-            if (isExpanded) {
-                previousExpandedPosition = position
-                dropDownEnable()
-            } else {
-                dropDownDisable()
-            }
+            // Reset dropdown state on bind
+            containerTransactionEntryDropDrown.visibility = View.GONE
         }
     }
 

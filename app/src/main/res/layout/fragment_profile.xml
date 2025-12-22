@@ -125,6 +125,24 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_profile_delete_account"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_margin="@dimen/gap_normal"
+        android:background="@drawable/button_google_bg"
+        android:text="@string/btn_delete_account"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_normal"
+        app:backgroundTint="@null"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_exit"
+        app:iconGravity="textEnd"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/btn_profile_sign_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_profile_sign_out"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"

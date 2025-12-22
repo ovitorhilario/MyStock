@@ -1,36 +1,62 @@
 [versions]
-agp = "8.2.0-alpha04"
-firebase-bom = "32.0.0"
-kotlin = "1.8.0"
-core-ktx = "1.9.0"
+agp = "8.13.2"
+androidx-credentials-credentials = "1.6.0-rc01"
+googleid = "1.1.1"
+kotlin = "2.3.0"
+firebase-bom = "34.7.0"
+glide = "5.0.5"
+junit-jupiter = "6.0.1"
+core-ktx = "1.17.0"
 junit = "4.13.2"
-androidx-test-ext-junit = "1.1.5"
-espresso-core = "3.5.1"
-appcompat = "1.6.1"
-material = "1.9.0"
-constraintlayout = "2.1.4"
-navigation-ui-ktx = "2.5.3"
-navigation-fragment-ktx = "2.5.3"
-play-services-auth = "20.5.0"
-squareup-picasso = "2.8"
+androidx-test-ext-junit = "1.3.0"
+espresso-core = "3.7.0"
+appcompat = "1.7.1"
+kotlinx-coroutines-test = "1.10.2"
+kotlinx-serialization-json = "1.9.0"
+material = "1.13.0"
+constraintlayout = "2.2.1"
+mockk = "1.14.7"
+mockk-android = "1.14.7"
+navigation-fragment = "2.9.6"
+play-services-auth = "21.4.0"
+play-services-code-scanner = "16.1.0"
+squareup-picasso = "2.71828"
+swiperefreshlayout = "1.2.0"
 
 [libraries]
-androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
-androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
+androidx-credentials-credentials3 = { module = "androidx.credentials:credentials", version.ref = "androidx-credentials-credentials" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "androidx-credentials-credentials" }
+androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigation-fragment" }
+androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigation-fragment" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk-android" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "play-services-auth" }
+play-services-code-scanner = { module = "com.google.android.gms:play-services-code-scanner", version.ref = "play-services-code-scanner" }
 squareup-picasso = { module = "com.squareup.picasso:picasso", version.ref = "squareup-picasso" }
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 [bundles]
 

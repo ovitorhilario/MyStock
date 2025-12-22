@@ -15,18 +15,11 @@
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_info_all_history"
+            android:id="@+id/chip_info_last_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="@string/chip_all" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_info_last_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="@string/chip_last_month" />
+            android:text="@string/chip_today" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_info_last_week"
@@ -36,11 +29,18 @@
             android:text="@string/chip_last_week" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_info_last_day"
+            android:id="@+id/chip_info_last_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="@string/chip_today" />
+            android:text="@string/chip_last_month" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_info_all_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/chip_all" />
 
     </com.google.android.material.chip.ChipGroup>
 

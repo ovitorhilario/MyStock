@@ -1,6 +1,5 @@
 package com.vitorhilarioapps.mystock.ui.home.view.selectproducts.adapter
 
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -18,8 +17,8 @@ import com.vitorhilarioapps.mystock.utils.moneyType
 class SelectProductsAdapter(
     private val listData: List<ProductItem>,
     private val transactionType: TransactionType,
-    private val addItem: (Int) -> Boolean,
-    private val deleteItem: (Int) -> Boolean,
+    private val addItem: (String) -> Boolean,
+    private val deleteItem: (String) -> Boolean,
     private val getResource: (Int) -> Drawable?
 ) : Adapter<SelectProductsAdapter.SingleHolder>() {
 
